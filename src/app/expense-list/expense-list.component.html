@@ -1,0 +1,13 @@
+<h3>List of expenses</h3>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">entity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of expenses">
+        <td>{{item | json}}</td>
+      </tr>
+    </tbody>
+  </table>

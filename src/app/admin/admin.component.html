@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h4>Forms</h4>
+          <hr>
+          <label>Form title : </label>
+          <input #newForm>
+          <button type="button" class="btn btn-secondary" (click)="createForm(newForm.value)">Create a new form</button>
+          <hr>
+          <app-forms-list [newForm]="newF"></app-forms-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

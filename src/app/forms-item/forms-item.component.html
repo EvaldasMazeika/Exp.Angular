@@ -1,0 +1,31 @@
+<div *ngIf="model">
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <formly-form [model]="model" [fields]="fields" [options]="optionss" [form]="form">
+            <button [hidden]="!type" type="submit" class="btn btn-primary submit-button">Submit</button>
+          </formly-form>
+        </form>
+        <button [hidden]="type" type="button" class="btn btn-danger" (click)="onPropRemove()">Remove</button>
+      </div>
+    </div>
+    <div *ngIf="model.type === 'select'">
+      <div class="card">
+        <div class="card-body">
+          <h6>Add new option</h6>
+          <hr>
+          <div>
+            <label>Title:
+              <input #optionTitle />
+            </label>
+            <button (click)="addOption(optionTitle.value); optionTitle.value=''">Add</button>
+          </div>
+          <ul *ngIf="model.templateOptions.hasOwnProperty('options')">
+            <li *ngFor="let bla of model.templateOptions.options">{{bla.label}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
