@@ -1,0 +1,9 @@
+<form autocomplete="off" [formGroup]="form">
+    <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
+        <div mat-dialog-actions>
+            <button mat-button (click)="onCancelClick()">Cancel</button>
+            <button mat-raised-button color="primary" [mat-dialog-close]="form" matTooltip="Updates selected record" [disabled]="!form.valid"
+                style="margin-left:10px">Update</button>
+        </div>
+    </formly-form>
+</form>

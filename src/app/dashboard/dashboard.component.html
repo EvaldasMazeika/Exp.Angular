@@ -1,18 +1,11 @@
-<div class="container">
-    <div class="row">
-        <div class="col-7">
-            <div class="card">
-                <div class="card-body">
-                    <app-expense-list></app-expense-list>
-                </div>
-            </div>
-        </div>
-        <div class="col-5">
-            <div class="card">
-                <div class="card-body">
-                    <app-expense-form></app-expense-form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div fxLayout="column" fxFlexOffset="10%" fxFlex="80%">
+    <mat-card>
+        <form  [formGroup]="form" (ngSubmit)="load()">
+            <formly-form fxLayout="row" fxLayoutAlign="start center" [model]="model" [fields]="fields" [options]="options" [form]="form">
+                <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid" style="margin-left:10px">Load template</button>
+            </formly-form>
+        </form>
+        <hr>
+        <active-template [formId]="formId"></active-template>
+    </mat-card>
 </div>

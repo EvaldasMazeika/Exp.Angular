@@ -1,17 +1,40 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { ExpensesService } from '../services/expenses.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+    templateUrl: './dashboard.component.html'
 })
+
 export class DashboardComponent implements OnInit {
+    form = new FormGroup({});
+    model: any = {};
+    options: FormlyFormOptions = {};
+    formId: any;
 
-  constructor(private services: ExpensesService) { }
+    constructor(private service: ExpensesService) {
+    }
 
-  ngOnInit() {
-  }
+    fields: FormlyFieldConfig[] = [
+        {
+          key: 'Select',
+          type: 'select',
+          templateOptions: {
+            label: 'Select form',
+            required: true,
+            options: this.service.getForms(), // TODO: need to fetch only names with ids
+            valueProp: '_id',
+            labelProp: 'name'
+          },
+        },
+      ];
 
+    ngOnInit() {
+    }
+
+    load() {
+        this.formId = this.model.Select;
+    }
 
 }
