@@ -18,17 +18,17 @@ export class DashboardComponent implements OnInit {
 
     fields: FormlyFieldConfig[] = [
         {
-          key: 'Select',
-          type: 'select',
-          templateOptions: {
-            label: 'Select form',
-            required: true,
-            options: this.service.getForms(), // TODO: need to fetch only names with ids
-            valueProp: '_id',
-            labelProp: 'name'
-          },
+            key: 'Select',
+            type: 'select',
+            templateOptions: {
+                label: 'Select form',
+                required: true,
+                options: this.service.getForms(), // TODO: need to fetch only names with ids
+                valueProp: '_id',
+                labelProp: 'name'
+            },
         },
-      ];
+    ];
 
     ngOnInit() {
     }

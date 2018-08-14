@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '../../../../node_modules/@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '../../../../node_modules/@angular/core';
 import { IProperty } from '../../models/IProperty.model';
 import { FormGroup } from '../../../../node_modules/@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '../../../../node_modules/@ngx-formly/core';
+import { IDropDownOptions } from '../../models/IDropDownOptions.model';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -9,14 +10,16 @@ import { FormlyFormOptions, FormlyFieldConfig } from '../../../../node_modules/@
     templateUrl: './form-item.component.html'
   })
 
-  export class FormItemComponent implements OnInit {
+  export class FormItemComponent implements OnInit  {
     @Input() model: IProperty;
     @Input() type: boolean;
     @Output() removeItem = new EventEmitter<any>();
     @Output() newItem = new EventEmitter<any>();
 
+
     form = new FormGroup({});
-    options: FormlyFormOptions = {};
+    options: FormlyFormOptions = {
+    };
     fields: FormlyFieldConfig[] = [
       {
         key: 'key',
@@ -24,8 +27,13 @@ import { FormlyFormOptions, FormlyFieldConfig } from '../../../../node_modules/@
         templateOptions: {
           label: 'Key',
           required: true
-        }
-      },
+        },
+        expressionProperties: {
+          'templateOptions.disabled': (model: any, formState: any) => {
+            return !this.type;
+          }
+      }
+    },
       {
         key: 'type',
         type: 'select',
@@ -37,7 +45,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '../../../../node_modules/@
             { label: 'Checkbox', value: 'checkbox' },
             { label: 'Select', value: 'select' },
             { label: 'Textarea', value: 'textarea' },
-            { label: 'Date', value: 'datepicker' },
+            { label: 'Date', value: 'basicDatepicker' },
             { label: 'Auto complete', value: 'autocomplete'}
           ]
         }
@@ -63,6 +71,15 @@ import { FormlyFormOptions, FormlyFieldConfig } from '../../../../node_modules/@
           label: 'Label',
           required: true
         }
+      },
+      {
+        key: 'templateOptions.isDateToday',
+        type: 'checkbox',
+        templateOptions: {
+          label: 'Today as default value?',
+          required: false
+        },
+        hideExpression: 'model.type != "basicDatepicker"'
       },
       {
         key: 'defaultValue',
@@ -114,28 +131,27 @@ import { FormlyFormOptions, FormlyFieldConfig } from '../../../../node_modules/@
     // @Output() newItem = new EventEmitter<any>();
     // @Output() removeItem = new EventEmitter<any>();
 
- // selectList: IDropDownOptions[] = [];
+    removeOption(optionId) {
+      const index = this.model.templateOptions.options.findIndex(d => d.value === optionId);
+      this.model.templateOptions.options.splice(index, 1);
+    }
 
-    // submit() {
-    //     this.newItem.emit(this.model);
-    //   }
-    //   onPropRemove() {
-    //     this.removeItem.emit(this.model);
-    //   }
 
-    //   addOption(title: string) {
-    //     title = title.trim();
-    //     if (!title) { return; }
+      addOption(title: string) {
+        title = title.trim();
+        if (!title) { return; }
 
-    //     let max = 0;
+        let max = 0;
 
-    //     if (this.model.templateOptions.hasOwnProperty('options')) {
-    //       max = Math.max.apply(Math, this.model.templateOptions.options.map(function (o) { return o.value; }));
-    //     } else {
-    //       this.model.templateOptions.options = [];
-    //     }
-    //     const newOpt: IDropDownOptions = { value: max + 1, label: title };
+        if (this.model.templateOptions.hasOwnProperty('options')) {
+          if (this.model.templateOptions.options.length > 0) {
+            max = Math.max.apply(Math, this.model.templateOptions.options.map(function (o) { return o.value; }));
+          }
+        } else {
+          this.model.templateOptions.options = [];
+        }
+        const newOpt: IDropDownOptions = { value: max + 1, label: title };
 
-    //     this.model.templateOptions.options.push(newOpt);
-    //   }
+        this.model.templateOptions.options.push(newOpt);
+      }
   }

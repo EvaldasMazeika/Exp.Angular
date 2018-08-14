@@ -1,6 +1,7 @@
 import { Component, OnInit } from '../../../../node_modules/@angular/core';
 import { IProperty } from '../../models/IProperty.model';
 import { IMyForm } from '../../models/IMyForm.model';
+import { IAutoCompleteList } from '../../models/IAutoCompleteList';
 import { ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { ExpensesService } from '../../services/expenses.service';
 import { Ng2IzitoastService } from '../../../../node_modules/ng2-izitoast';
@@ -31,18 +32,36 @@ export class FormsDetailsComponent implements OnInit {
     }
 
     async onFormSubmit(form: any) {
-        const isAdded: boolean = await this.service.UpdateForm(form).toPromise();
+        const localList = [];
+        form.items.forEach(element => {
+            if (element.type === 'autocomplete') {
+                localList.push(element.key);
+                element.templateOptions.formId = form._id;
+            }
+        });
+
+         const isAdded: boolean = await this.service.UpdateForm(form).toPromise();
 
         if (isAdded) {
             this.iziToast.success({title: 'Form updated successfully'});
+
+
+            const listOfAutos: IAutoCompleteList = { formId: form._id, properties: localList};
+            this.service.AddAutoCompletes(listOfAutos).subscribe();
+
         } else {
             this.iziToast.error({title: 'Error occured while saving form'});
         }
     }
 
     onAdded(prop: IProperty) {
-        this.form.items.push(prop);
-        this.selectedProp = null;
+        const isFound = this.form.items.find(w => w.key === prop.key);
+        if (isFound == null) {
+            this.form.items.push(prop);
+            this.selectedProp = null;
+        } else {
+            this.iziToast.error({title: 'Property with this key already exists'});
+        }
     }
 
     onRemoved(prop: any) {

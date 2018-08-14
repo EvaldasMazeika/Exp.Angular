@@ -2,17 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import {ReactiveFormsModule} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {
-  MatButtonModule, MatCheckboxModule, MatTableModule, MatTooltipModule, MatListModule,
-   MatDialogModule, MatPaginatorModule, MatNativeDateModule, MatAutocompleteModule
-  } from '@angular/material';
-import {FormlyMaterialModule} from '@ngx-formly/material';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormlyMaterialModule } from '@ngx-formly/material';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
-
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
@@ -32,6 +27,7 @@ import { FormlyFieldCheckbox } from './types/basicCheckbox-type.copmonent';
 import { EditRecordDialog } from './dashboard/active-template/dialogs/edit-record/editRecordDialog.dialog';
 import { NewFormDialog } from './control/forms-list/dialogs/newFormDialog.dialog';
 import { NewRecordDialog } from './dashboard/active-template/dialogs/new-record/newRecordDialog.dialog';
+import { FormlyFieldDate } from './types/datepicker-type.component';
 
 
 @NgModule({
@@ -48,7 +44,8 @@ import { NewRecordDialog } from './dashboard/active-template/dialogs/new-record/
     EditRecordDialog,
     FormlyFieldCheckbox,
     AutocompleteTypeComponent,
-    ActiveTemplateComponent
+    ActiveTemplateComponent,
+    FormlyFieldDate
   ],
   imports: [
     BrowserModule,
@@ -57,22 +54,14 @@ import { NewRecordDialog } from './dashboard/active-template/dialogs/new-record/
     MaterialModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatTableModule,
     FormlyMaterialModule,
     Ng2IziToastModule,
-    MatTooltipModule,
     FlexLayoutModule,
-    MatListModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatAutocompleteModule,
-    MatNativeDateModule,
     FormlyMatDatepickerModule,
     FormlyModule.forRoot({
       types: [
         { name: 'basicCheckbox', component: FormlyFieldCheckbox },
+        { name: 'basicDatepicker', component: FormlyFieldDate },
         {
           name: 'autocomplete',
           component: AutocompleteTypeComponent,
@@ -87,10 +76,10 @@ import { NewRecordDialog } from './dashboard/active-template/dialogs/new-record/
   ],
   entryComponents: [
     AppComponent,
-     NewRecordDialog,
-     NewFormDialog,
-     EditRecordDialog
-    ],
+    NewRecordDialog,
+    NewFormDialog,
+    EditRecordDialog
+  ],
   providers: [
     ExpensesService
   ],

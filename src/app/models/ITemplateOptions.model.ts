@@ -5,5 +5,7 @@ export interface ITemplateOptions {
     placeholder?: string;
     required?: boolean;
     type?: string;
+    formId?: string;
+    isDateToday?: boolean;
     options?: Array<IDropDownOptions>;
 }
