@@ -1,48 +1,73 @@
-import { Component, OnChanges, OnInit, Input, ViewChild, SimpleChanges, SimpleChange } from '@angular/core';
-import { IMyForm } from '../../models/IMyForm.model';
-import { MatTableDataSource, MatDialog, MatPaginator } from '@angular/material';
+import { Component, OnInit, Input, SimpleChanges, SimpleChange, OnChanges, ViewChild } from '@angular/core';
 import { ExpensesService } from '../../services/expenses.service';
+import { IMyForm } from '../../models/IMyForm.model';
+import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { Ng2IzitoastService } from 'ng2-izitoast';
-import { NewRecordDialog } from './dialogs/new-record/newRecordDialog.dialog';
-import { IRecord } from '../../models/IRecord.model';
 import { EditRecordDialog } from './dialogs/edit-record/editRecordDialog.dialog';
-import { IKeyValuePair } from '../../models/IKeyValuePair';
 import { IAutoCompleteWords } from '../../models/IAutoCompleteWords';
+import { IKeyValuePair } from '../../models/IKeyValuePair';
+import { IRecord } from '../../models/IRecord.model';
+import { NewRecordDialog } from './dialogs/new-record/newRecordDialog.dialog';
 
 @Component({
     // tslint:disable-next-line:component-selector
-    selector: 'active-template',
-    templateUrl: './active-template.component.html'
+    selector: 'chosen-template',
+    templateUrl: './chosen-template.component.html'
 })
 
-export class ActiveTemplateComponent implements OnChanges, OnInit {
+export class ChosenTemplateComponent implements OnChanges, OnInit {
     @Input() formId: any;
-
     form: IMyForm;
-    localRecords: any[];
 
+    localRecords: any[];
     displayedColumns: string[];
     columnsToDisplay: string[];
     dataSource = new MatTableDataSource();
 
-    constructor(public dialog: MatDialog, private service: ExpensesService, public iziToast: Ng2IzitoastService) { }
+    constructor(private service: ExpensesService, public iziToast: Ng2IzitoastService, public dialog: MatDialog) { }
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    ngOnInit() {
-    }
+    ngOnInit() { }
 
     ngOnChanges(changes: SimpleChanges) {
         const formId: SimpleChange = changes.formId;
         if (formId.currentValue != null) {
-            this.GetRecords(formId.currentValue);
-            this.getForm(formId.currentValue); // use this form instead of calling again
+            this.getForm(formId.currentValue);
         }
-
     }
+    GetRecords(formId: string) {
+        const headers: string[] = [];
+        const body: any[] = [];
 
-    getForm(id: string) {
-        this.service.getForm(id).subscribe((res) => {
-            this.form = res;
+       this.service.GetAllRecords(formId).subscribe((res) => {
+            res.forEach(ele => {
+                const temp: any = Object.assign({}, ele.body); // i do a copy of body only
+                temp._id = ele._id; // adding id property to be able to edit/delete
+
+                body.push(temp);
+                for (const key in ele.body) { // creates headers array
+                    if (headers.indexOf(key) === -1) {
+                        headers.push(key);
+                    }
+                }
+            });
+
+            headers.push('actions');
+            this.localRecords = body; // instanciate objects
+            this.displayedColumns = headers;
+            this.columnsToDisplay = this.displayedColumns.slice();
+            this.dataSource.data = this.localRecords;
+            this.dataSource.paginator = this.paginator;
+       });
+    }
+    getForm(formId: string) {
+        this.service.getForm(formId).subscribe((res) => {
+            if (res == null) {
+                this.formId = null;
+            } else {
+                this.form = res;
+                this.GetRecords(formId);
+            }
         });
     }
 
@@ -62,16 +87,6 @@ export class ActiveTemplateComponent implements OnChanges, OnInit {
                 this.AddRecord(record, words);
             }
         });
-    }
-    GatherWords(result: any): IAutoCompleteWords {
-        const listOfWords: IKeyValuePair[] = [];
-        this.form.items.forEach(element => {
-            if (element.type === 'autocomplete' && result.value[element.key] != null) {
-                listOfWords.push({ key: element.key, value: result.value[element.key].trim() });
-            }
-        });
-        const words: IAutoCompleteWords = { formId: this.formId, words: listOfWords };
-        return words;
     }
 
     AddRecord(record: IRecord, words: IAutoCompleteWords): void {
@@ -106,36 +121,6 @@ export class ActiveTemplateComponent implements OnChanges, OnInit {
         });
     }
 
-
-    GetRecords(id: string) {
-        const headers: string[] = [];
-        const body: any[] = [];
-
-        this.service.GetAllRecords(id).subscribe((result) => {
-
-            result.forEach(element => {
-                const temp: any = Object.assign({}, element.body);
-                temp._id = element._id;
-                body.push(temp);
-
-                // tslint:disable-next-line:forin
-                for (const key in element.body) {
-                    if (headers.indexOf(key) === -1) {
-                        headers.push(key);
-                    }
-                }
-            });
-
-            headers.push('actions');
-            this.localRecords = body;
-
-            this.displayedColumns = headers;
-            this.columnsToDisplay = this.displayedColumns.slice();
-            this.dataSource.data = this.localRecords;
-            this.dataSource.paginator = this.paginator;
-        });
-    }
-
     onDelete(id: string) {
         this.service.DeleteRecord(id).subscribe(() => {
             const index = this.localRecords.findIndex(d => d._id === id);
@@ -159,6 +144,16 @@ export class ActiveTemplateComponent implements OnChanges, OnInit {
         });
     }
 
+    GatherWords(result: any): IAutoCompleteWords {
+        const listOfWords: IKeyValuePair[] = [];
+        this.form.items.forEach(element => {
+            if (element.type === 'autocomplete' && result.value[element.key] != null) {
+                listOfWords.push({ key: element.key, value: result.value[element.key].trim() });
+            }
+        });
+        const words: IAutoCompleteWords = { formId: this.formId, words: listOfWords };
+        return words;
+    }
 
     TryUpdateRecord(record, id: string, words: IAutoCompleteWords) {
         const temp: IRecord = { formId: this.formId, _id: id, body: record };
@@ -197,5 +192,4 @@ export class ActiveTemplateComponent implements OnChanges, OnInit {
         });
 
     }
-
 }

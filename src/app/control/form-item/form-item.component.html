@@ -1,31 +1,34 @@
-<div *ngIf="model" fxFlex fxlayout="row" fxlayout.sm="column" fxlayout.xs="column" [fxLayout]="direction">
-  <div fxFlex fxLayout.md="row">
-    <mat-card>
+<div *ngIf="model" div fxLayout="row" fxLayoutAlign="space-between start" fxLayout.lt-md="column" fxLayoutAlign.lt-md="space-evenly center">
+  <mat-card>
+    <mat-list role="list">
       <form [formGroup]="form" (ngSubmit)="submit()">
         <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
-          <button *ngIf="type" type="submit" mat-flat-button color="primary" [disabled]="!form.valid" class="submit-button">Attach</button>
+          <button *ngIf="type" type="submit" mat-flat-button color="primary" [disabled]="!form.valid" class="submit-button">Attach
+            to form</button>
+
+          <button *ngIf="!type" type="submit" mat-flat-button color="primary" [disabled]="!form.valid" class="submit-button">Update</button>
           <button *ngIf="!type" type="button" mat-flat-button color="warn" (click)="onPropRemove()">Remove</button>
         </formly-form>
       </form>
-    </mat-card>
-  </div>
-  <div *ngIf="model.type === 'select'" fxFlex fxLayout.md="row">
-    <mat-card>
-      <h6>Options</h6>
-      <hr>
-      <div>
-        <mat-form-field>
-          <input #optionTitle matInput placeholder="Option title" value="">
-        </mat-form-field>
-        <button (click)="addOption(optionTitle.value); optionTitle.value=''" mat-mini-fab color="primary">Add</button>
-      </div>
-      <mat-nav-list *ngIf="model.templateOptions.hasOwnProperty('options')" dense>
-        <mat-list-item *ngFor="let item of model.templateOptions.options"> {{item.label}}
-          <div fxLayout="row" fxLayoutAlign="end none"><button mat-mini-fab color="warn" (click)="removeOption(item.value)"><mat-icon>delete_forever</mat-icon></button></div>
-        </mat-list-item>
+    </mat-list>
+  </mat-card>
+  <mat-card *ngIf="model.type === 'select'">
+    <h1 class="display-4">Options</h1>
+    <div>
+      <mat-form-field>
+        <input #optionTitle matInput placeholder="Option title" value="">
+        <button mat-button matSuffix mat-icon-button (click)="addOption(optionTitle.value); optionTitle.value=''" aria-label="Add">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
 
-      </mat-nav-list>
-    </mat-card>
-
-  </div>
+    </div>
+    <mat-nav-list *ngIf="model.templateOptions.hasOwnProperty('options')" dense>
+      <mat-list-item *ngFor="let item of model.templateOptions.options">
+        <button mat-icon-button (click)="removeOption(item.value)">
+          <mat-icon>cancel</mat-icon>
+        </button>{{item.label}}
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-card>
 </div>

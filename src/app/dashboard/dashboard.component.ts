@@ -1,40 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { ExpensesService } from '../services/expenses.service';
+import { LocalStorage } from '@ngx-pwa/local-storage';
+import { TransferDataService } from '../services/trasnferData.service';
 
 @Component({
     templateUrl: './dashboard.component.html'
 })
 
 export class DashboardComponent implements OnInit {
-    form = new FormGroup({});
-    model: any = {};
-    options: FormlyFormOptions = {};
     formId: any;
 
-    constructor(private service: ExpensesService) {
+    constructor(protected localStorage: LocalStorage, private transfer: TransferDataService) {
     }
 
-    fields: FormlyFieldConfig[] = [
-        {
-            key: 'Select',
-            type: 'select',
-            templateOptions: {
-                label: 'Select form',
-                required: true,
-                options: this.service.getForms(), // TODO: need to fetch only names with ids
-                valueProp: '_id',
-                labelProp: 'name'
-            },
-        },
-    ];
 
     ngOnInit() {
+        this.transfer.currentData.subscribe(data => {
+            this.formId = data;
+            // if (data != null) {
+            //     this.formId = data;
+            // }
+        });
     }
-
-    load() {
-        this.formId = this.model.Select;
-    }
-
 }

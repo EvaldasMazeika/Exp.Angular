@@ -21,13 +21,14 @@ import { ExpensesService } from './services/expenses.service';
 import { FormsDetailsComponent } from './control/form-detail/form-detail.component';
 import { FormItemComponent } from './control/form-item/form-item.component';
 import { FormlyModule } from '@ngx-formly/core';
-import { ActiveTemplateComponent } from './dashboard/active-template/active-template.component';
 import { AutocompleteTypeComponent } from './types/autocomplete-type.component';
 import { FormlyFieldCheckbox } from './types/basicCheckbox-type.copmonent';
-import { EditRecordDialog } from './dashboard/active-template/dialogs/edit-record/editRecordDialog.dialog';
 import { NewFormDialog } from './control/forms-list/dialogs/newFormDialog.dialog';
-import { NewRecordDialog } from './dashboard/active-template/dialogs/new-record/newRecordDialog.dialog';
 import { FormlyFieldDate } from './types/datepicker-type.component';
+import { ChosenTemplateComponent } from './dashboard/chosen-template/chosen-template.component';
+import { NewRecordDialog } from './dashboard/chosen-template/dialogs/new-record/newRecordDialog.dialog';
+import { EditRecordDialog } from './dashboard/chosen-template/dialogs/edit-record/editRecordDialog.dialog';
+
 
 
 @NgModule({
@@ -44,8 +45,8 @@ import { FormlyFieldDate } from './types/datepicker-type.component';
     EditRecordDialog,
     FormlyFieldCheckbox,
     AutocompleteTypeComponent,
-    ActiveTemplateComponent,
-    FormlyFieldDate
+    FormlyFieldDate,
+    ChosenTemplateComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,4 @@
-<h4>Forms</h4>
-<hr>
+<h1 class="mat-display-1">Forms</h1>
 <button mat-raised-button (click)="openDialog()" style="margin: 5px"> Add Form </button>
 
 <div class="mat-elevation-z8">
@@ -14,7 +13,7 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let forms">
-                <button mat-raised-button matTooltip="Instantly deletes form" (click)="onDelete(forms._id)" color="warn">Delete</button>
+                <button mat-mini-fab matTooltip="Instantly deletes form" (click)="onDelete(forms._id)" color="warn"><mat-icon>cancel</mat-icon></button>
             </td>
         </ng-container>
 

@@ -1,20 +1,18 @@
 <mat-card fxFlexOffset="10%" fxFlex="80%">
     <div fxLayout="column" fxLayoutAlign="space-between stretch">
-        <h3>{{form?.name}}</h3>
+        <h3 class="mat-display-1">{{form?.name}}</h3>
     </div>
-    <div>
-        <div fxLayout="row" fxFlex="33%">
-            <mat-card>
-                <button type="button" mat-raised-button color="primary" (click)="onSelectProp({}, true)" style="margin:5px">Add new property</button>
-                <button type="button" mat-stroked-button (click)="onFormSubmit(form)" style="margin:5px">Save form</button>
-                <hr>
-                <div *ngIf="form">
-                    <mat-nav-list>
-                        <mat-list-item *ngFor="let prop of form.items" (click)="onSelectProp(prop, false)">{{prop.key}}</mat-list-item>
-                    </mat-nav-list>
-                </div>
-            </mat-card>
-        </div>
-        <form-item [model]="selectedProp" [type]="selectedType" (removeItem)="onRemoved($event)" (newItem)="onAdded($event)"></form-item>
+    <div div fxLayout="row" fxLayoutAlign="space-between start" fxLayout.lt-md="column" fxLayoutAlign.lt-md="space-evenly center">
+        <mat-card>
+            <button type="button" mat-raised-button color="primary" (click)="onSelectProp({}, true)" style="margin:5px">Add
+                new property</button>
+            <mat-divider></mat-divider>
+            <div *ngIf="form">
+                <mat-nav-list>
+                    <mat-list-item *ngFor="let prop of form.items" (click)="onSelectProp(prop, false)">{{prop.key}}</mat-list-item>
+                </mat-nav-list>
+            </div>
+        </mat-card>
+        <form-item [model]="selectedProp" [type]="selectedType" (removeProperty)="onRemoved($event)" (addOrUpdateProperty)="onAddOrUpdate($event)"></form-item>
     </div>
 </mat-card>

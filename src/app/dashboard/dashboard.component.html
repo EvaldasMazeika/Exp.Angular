@@ -1,11 +1,5 @@
 <div fxLayout="column" fxFlexOffset="10%" fxFlex="80%">
     <mat-card>
-        <form  [formGroup]="form" (ngSubmit)="load()">
-            <formly-form fxLayout="row" fxLayoutAlign="start center" [model]="model" [fields]="fields" [options]="options" [form]="form">
-                <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid" style="margin-left:10px">Load template</button>
-            </formly-form>
-        </form>
-        <hr>
-        <active-template [formId]="formId"></active-template>
+        <chosen-template [formId]="formId"></chosen-template>
     </mat-card>
 </div>

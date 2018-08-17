@@ -4,6 +4,7 @@ import { MatTableDataSource, MatDialog, MatPaginator } from '../../../../node_mo
 import { ExpensesService } from '../../services/expenses.service';
 import { Ng2IzitoastService } from '../../../../node_modules/ng2-izitoast';
 import { NewFormDialog } from './dialogs/newFormDialog.dialog';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -17,7 +18,10 @@ export class FormsListComponent implements OnInit {
 
     dataSource = new MatTableDataSource();
 
-    constructor(private service: ExpensesService, public iziToast: Ng2IzitoastService, public dialog: MatDialog) { }
+    constructor(private service: ExpensesService,
+        public iziToast: Ng2IzitoastService,
+        public dialog: MatDialog,
+        protected localStorage: LocalStorage) { }
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     ngOnInit() {
@@ -69,6 +73,14 @@ export class FormsListComponent implements OnInit {
             this.forms.splice(index, 1);
             this.dataSource.data = this.forms;
             this.iziToast.success({ title: 'Form deleted successfully' });
+
+            // check if it exists in localstorage, if then remove
+            this.localStorage.getItem('form').subscribe((form) => {
+                if (form['formId'] === ids) {
+                    this.localStorage.removeItem('form').subscribe(() => {});
+                }
+            });
+
         });
     }
 }
