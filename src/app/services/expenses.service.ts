@@ -1,6 +1,7 @@
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { IMyForm } from '../models/IMyForm.model';
 import { IRecord } from '../models/IRecord.model';
 import { IAutoCompleteList } from '../models/IAutoCompleteList';
@@ -17,6 +18,17 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ExpensesService {
+  Test(): Observable<any> {
+    return this.http.get('https://localhost:44379/api/Records/download/labas/testas/testPurpose.txt',
+     {headers: new HttpHeaders({responseType: 'blob' }), responseType: 'blob' }).pipe(map((res) => {
+      return new Blob([res]);
+  }));
+  }
+
+  TestBoi(form: any): any {
+    return this.http.post('https://localhost:44379/api/Records/test', form);
+  }
+
   AddWordsToAutoDictionaries(words: IAutoCompleteWords): any {
     return this.http.post('https://localhost:44379/api/Records/autocomplete', words, httpOptions);
   }

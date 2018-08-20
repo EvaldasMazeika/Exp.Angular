@@ -35,6 +35,11 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
             this.getForm(formId.currentValue);
         }
     }
+
+    isRawCode(column) {
+        return this.form.items.find(x => x.key === column).type === 'fileInput' ? true : false;
+    }
+
     GetRecords(formId: string) {
         const headers: string[] = [];
         const body: any[] = [];
@@ -80,11 +85,17 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result != null) {
 
+                console.log(result);
+                // foreach property if type is fileinput,
+                // foreach array, construct form data, transform object
+                // send form tada
+                // send object
+                // server: transform names to full urls sanve save them with comma separated
 
-                const words = this.GatherWords(result);
+                // const words = this.GatherWords(result);
 
-                const record: IRecord = { formId: this.formId, body: result.value };
-                this.AddRecord(record, words);
+                // const record: IRecord = { formId: this.formId, body: result.value };
+                // this.AddRecord(record, words);
             }
         });
     }

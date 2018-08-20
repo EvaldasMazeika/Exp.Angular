@@ -46,7 +46,8 @@ export class FormItemComponent implements OnInit {
           { label: 'Select', value: 'select' },
           { label: 'Textarea', value: 'textarea' },
           { label: 'Date', value: 'basicDatepicker' },
-          { label: 'Auto complete', value: 'autocomplete' }
+          { label: 'Auto complete', value: 'autocomplete' },
+          { label: 'File input', value: 'fileInput'}
         ]
       }
     },
@@ -71,6 +72,15 @@ export class FormItemComponent implements OnInit {
         label: 'Label',
         required: true
       }
+    },
+    {
+      key: 'templateOptions.isMultiFile',
+      type: 'basicCheckbox',
+      templateOptions: {
+        label: 'Can do multi files?',
+        required: false
+      },
+      hideExpression: 'model.type != "fileInput"'
     },
     {
       key: 'templateOptions.isDateToday',

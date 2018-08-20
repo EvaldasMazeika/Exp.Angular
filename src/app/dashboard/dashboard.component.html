@@ -1,4 +1,12 @@
 <div fxLayout="column" fxFlexOffset="10%" fxFlex="80%">
+    <a href="https://localhost:44379/api/Records/download/labas/testas/testPurpose.txt">labas</a>
+<button type="button" (click)="wad()">blaha</button>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
+            <button type="submit" mat-flat-button color="primary" [disabled]="!form.valid">form</button>
+        </formly-form>
+    </form>
     <mat-card>
         <chosen-template [formId]="formId"></chosen-template>
     </mat-card>
