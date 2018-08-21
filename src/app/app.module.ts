@@ -30,6 +30,7 @@ import { ChosenTemplateComponent } from './dashboard/chosen-template/chosen-temp
 import { NewRecordDialog } from './dashboard/chosen-template/dialogs/new-record/newRecordDialog.dialog';
 import { EditRecordDialog } from './dashboard/chosen-template/dialogs/edit-record/editRecordDialog.dialog';
 import { FormlyFieldFileInput } from './types/fileInput-type.component';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -53,6 +54,7 @@ import { FormlyFieldFileInput } from './types/fileInput-type.component';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     HttpClientModule,
     FormsModule,
     MaterialModule,

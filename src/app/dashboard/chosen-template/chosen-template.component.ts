@@ -8,6 +8,10 @@ import { IAutoCompleteWords } from '../../models/IAutoCompleteWords';
 import { IKeyValuePair } from '../../models/IKeyValuePair';
 import { IRecord } from '../../models/IRecord.model';
 import { NewRecordDialog } from './dialogs/new-record/newRecordDialog.dialog';
+import { FileInput } from 'ngx-material-file-input';
+import { ResourceLoader } from '@angular/compiler';
+import * as _ from 'lodash';
+import {saveAs as importedSaveAs} from 'file-saver';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -30,21 +34,32 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     ngOnInit() { }
 
     ngOnChanges(changes: SimpleChanges) {
+        this.displayedColumns = [];
+        this.columnsToDisplay = [];
         const formId: SimpleChange = changes.formId;
         if (formId.currentValue != null) {
             this.getForm(formId.currentValue);
         }
     }
 
+    download(recordId, columnName, itemName) {
+        this.service.DownloadFile(this.formId, recordId, columnName, itemName).subscribe((res) => {
+            importedSaveAs(res, itemName);
+        });
+
+    }
+
     isRawCode(column) {
-        return this.form.items.find(x => x.key === column).type === 'fileInput' ? true : false;
+        if (this.form != null) {
+            return this.form.items.find(x => x.key === column).type === 'fileInput' ? true : false;
+        }
     }
 
     GetRecords(formId: string) {
         const headers: string[] = [];
         const body: any[] = [];
 
-       this.service.GetAllRecords(formId).subscribe((res) => {
+        this.service.GetAllRecords(formId).subscribe((res) => {
             res.forEach(ele => {
                 const temp: any = Object.assign({}, ele.body); // i do a copy of body only
                 temp._id = ele._id; // adding id property to be able to edit/delete
@@ -63,7 +78,7 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
             this.columnsToDisplay = this.displayedColumns.slice();
             this.dataSource.data = this.localRecords;
             this.dataSource.paginator = this.paginator;
-       });
+        });
     }
     getForm(formId: string) {
         this.service.getForm(formId).subscribe((res) => {
@@ -85,23 +100,43 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result != null) {
 
-                console.log(result);
-                // foreach property if type is fileinput,
-                // foreach array, construct form data, transform object
-                // send form tada
-                // send object
-                // server: transform names to full urls sanve save them with comma separated
+                const words = this.GatherWords(result);
 
-                // const words = this.GatherWords(result);
-
-                // const record: IRecord = { formId: this.formId, body: result.value };
-                // this.AddRecord(record, words);
+                const record: IRecord = { formId: this.formId, body: result.value };
+                this.AddRecord(record, words);
             }
         });
     }
 
     AddRecord(record: IRecord, words: IAutoCompleteWords): void {
+        const files = {};
+
+        for (const key in record.body) {
+            if (record.body.hasOwnProperty(key)) {
+                if (record.body[key] instanceof FileInput) {
+                    files[key] = _.cloneDeep(record.body[key]);
+
+                    const names: string[] = [];
+                    record.body[key].files.forEach(element => {
+                        const name = `${element.name}`;
+                        names.push(name);
+                    });
+                    record.body[key] = names;
+                }
+            }
+        }
         this.service.InsertRecord(record).subscribe((result) => {
+
+            for (const key in files) {
+                if (files.hasOwnProperty(key)) {
+                    const formData: FormData = new FormData();
+                    files[key].files.forEach(element => {
+                        formData.append(element.name, element);
+                    });
+
+                    this.service.UploadFiles(this.formId, result._id, key, formData).subscribe();
+                }
+            }
 
             const temp: any = Object.assign({}, result.body);
 

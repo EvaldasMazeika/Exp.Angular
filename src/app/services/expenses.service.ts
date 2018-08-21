@@ -18,15 +18,15 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ExpensesService {
-  Test(): Observable<any> {
-    return this.http.get('https://localhost:44379/api/Records/download/labas/testas/testPurpose.txt',
-     {headers: new HttpHeaders({responseType: 'blob' }), responseType: 'blob' }).pipe(map((res) => {
+  DownloadFile(formId: any, recordId: any, columnName: any, itemName: any): Observable<any> {
+    return this.http.get(`https://localhost:44379/api/Records/download/${formId}/${recordId}/${columnName}/${itemName}`,
+     {headers: new HttpHeaders({responseType: 'blob'}), responseType: 'blob'}).pipe(map((res) => {
       return new Blob([res]);
-  }));
+    }));
   }
 
-  TestBoi(form: any): any {
-    return this.http.post('https://localhost:44379/api/Records/test', form);
+  UploadFiles(formId: any, recordId: string, key: string, formData: FormData): any {
+    return this.http.post(`https://localhost:44379/api/Records/upload/${formId}/${recordId}/${key}`, formData);
   }
 
   AddWordsToAutoDictionaries(words: IAutoCompleteWords): any {
