@@ -9,6 +9,7 @@ import { Ng2IziToastModule } from 'ng2-izitoast';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
@@ -31,6 +32,7 @@ import { NewRecordDialog } from './dashboard/chosen-template/dialogs/new-record/
 import { EditRecordDialog } from './dashboard/chosen-template/dialogs/edit-record/editRecordDialog.dialog';
 import { FormlyFieldFileInput } from './types/fileInput-type.component';
 import { CommonModule } from '@angular/common';
+import { SelectListTypeComponent } from './types/selectList-type.component';
 
 
 
@@ -50,7 +52,8 @@ import { CommonModule } from '@angular/common';
     AutocompleteTypeComponent,
     FormlyFieldDate,
     ChosenTemplateComponent,
-    FormlyFieldFileInput
+    FormlyFieldFileInput,
+    SelectListTypeComponent
   ],
   imports: [
     BrowserModule,
@@ -65,11 +68,13 @@ import { CommonModule } from '@angular/common';
     FlexLayoutModule,
     FormlyMatDatepickerModule,
     MaterialFileInputModule,
+    NgSelectModule,
     FormlyModule.forRoot({
       types: [
         { name: 'basicCheckbox', component: FormlyFieldCheckbox },
         { name: 'basicDatepicker', component: FormlyFieldDate },
         { name: 'fileInput', component: FormlyFieldFileInput},
+        { name: 'selecListTags', component: SelectListTypeComponent},
         {
           name: 'autocomplete',
           component: AutocompleteTypeComponent,

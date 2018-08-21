@@ -1,5 +1,9 @@
 <div fxLayout="column" fxFlexOffset="10%" fxFlex="80%">
     <mat-card>
+        <ng-select [items]="companies" [addTag]="true" bindLabel="name" [(ngModel)]="selectedCompany">
+        </ng-select>
+    </mat-card>
+    <mat-card>
         <chosen-template [formId]="formId"></chosen-template>
     </mat-card>
 </div>

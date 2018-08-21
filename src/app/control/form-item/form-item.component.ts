@@ -43,7 +43,7 @@ export class FormItemComponent implements OnInit {
         options: [
           { label: 'Input', value: 'input' },
           { label: 'Checkbox', value: 'checkbox' },
-          { label: 'Select', value: 'select' },
+          { label: 'Select', value: 'selecListTags' },
           { label: 'Textarea', value: 'textarea' },
           { label: 'Date', value: 'basicDatepicker' },
           { label: 'Auto complete', value: 'autocomplete' },

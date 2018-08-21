@@ -12,14 +12,21 @@ export class DashboardComponent implements OnInit {
     constructor(protected localStorage: LocalStorage, private transfer: TransferDataService) {
     }
 
+    companies: any[] = [];
+    loading = false;
+    companiesNames = ['Miškas', 'Žalias', 'Flexigen'];
 
-// wad() {
-//     this.service.Test().subscribe((res) => {
-//         importedSaveAs(res, 'test.txt');
-//     });
-// }
+    // addTag(name) {
+    //     alert(name);
+    //     return { name: name, tag: true };
+    // }
+
 
     ngOnInit() {
+        this.companiesNames.forEach((c, i) => {
+            this.companies.push({ id: i, name: c });
+        });
+
         this.transfer.currentData.subscribe(data => {
             this.formId = data;
         });

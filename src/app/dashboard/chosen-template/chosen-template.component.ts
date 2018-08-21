@@ -16,7 +16,9 @@ import {saveAs as importedSaveAs} from 'file-saver';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'chosen-template',
-    templateUrl: './chosen-template.component.html'
+    templateUrl: './chosen-template.component.html',
+
+    
 })
 
 export class ChosenTemplateComponent implements OnChanges, OnInit {
@@ -94,7 +96,8 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     openRecordDialog() {
         const dialogRef = this.dialog.open(NewRecordDialog, {
             width: '500px',
-            data: { id: this.formId }
+            data: { id: this.formId },
+            panelClass: 'mytest-overflow'
         });
 
         dialogRef.afterClosed().subscribe(result => {

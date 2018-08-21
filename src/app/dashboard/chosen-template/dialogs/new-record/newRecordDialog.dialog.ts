@@ -7,7 +7,8 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'newRecord-dialog',
-    templateUrl: './newRecordDialog.dialog.html'
+    templateUrl: './newRecordDialog.dialog.html',
+
 })
 
 // tslint:disable-next-line:component-class-suffix

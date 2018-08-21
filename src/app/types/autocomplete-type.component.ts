@@ -12,7 +12,7 @@ import { ExpensesService } from '../services/expenses.service';
     <input type="text" [placeholder]="to.placeholder" [formlyAttributes]="field"
      matInput [formControl]="formControl" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <mat-option *ngFor="let option of filteredOptions" [value]="option">
         {{option}}
       </mat-option>
     </mat-autocomplete>
@@ -30,30 +30,27 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit {
 
   filter: Observable<any[]>;
   optionss: string[];
-  filteredOptions: Observable<string[]>;
+  // filteredOptions: Observable<string[]>;
+  filteredOptions: string[];
 
 
   ngOnInit() {
     super.ngOnInit();
     this.service.GetAutoComplete(this.field.templateOptions.formId, this.field.key).subscribe((res) => {
       this.optionss = res.items;
-      this.filteredOptions = this.formControl.valueChanges
-        .pipe(
-          startWith(''),
-          map(value =>  this._filter(value))
-        );
-        this.formFieldControl.showPanel = false;
-        this.formControl.valueChanges.subscribe((value) => {
-         console.log(this.forr);
-          if (value.length >= 2) {
-            this.formFieldControl.showPanel = false;
-            this.forr.ngControl.valueAccessor.autocomplete.showPanel = true;
-          } else {
-
-           this.formFieldControl.showPanel = false;
-           this.forr.ngControl.valueAccessor.autocomplete.showPanel = false;
-          }
-        });
+      // this.filteredOptions = this.formControl.valueChanges
+      //   .pipe(
+      //     startWith(''),
+      //     map(value =>  this._filter(value))
+      //   );
+      // WORKAROUND/ NEED BETTER SOLUTION
+      this.formControl.valueChanges.subscribe((value) => {
+        if (value.length >= 2) {
+          this.filteredOptions = this._filter(value);
+        } else {
+          this.filteredOptions = [];
+        }
+      });
     });
 
 
@@ -61,7 +58,6 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
     return this.optionss.filter(option => option.toLowerCase().includes(filterValue));
   }
 }
