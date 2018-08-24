@@ -38,12 +38,7 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit {
     super.ngOnInit();
     this.service.GetAutoComplete(this.field.templateOptions.formId, this.field.key).subscribe((res) => {
       this.optionss = res.items;
-      // this.filteredOptions = this.formControl.valueChanges
-      //   .pipe(
-      //     startWith(''),
-      //     map(value =>  this._filter(value))
-      //   );
-      // WORKAROUND/ NEED BETTER SOLUTION
+
       this.formControl.valueChanges.subscribe((value) => {
         if (value.length >= 2) {
           this.filteredOptions = this._filter(value);

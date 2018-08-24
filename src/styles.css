@@ -8,3 +8,12 @@ body {
 }
 
 .mytest-overflow .mat-dialog-container {overflow: visible}
+
+.wc-date-container {
+    float: none !important;
+    border: none !important;
+    border-bottom: 1px solid #000000 !important;
+}
+.wc-date-container > span {
+    color: #000000 !important;
+}

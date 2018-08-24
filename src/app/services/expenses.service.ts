@@ -7,6 +7,7 @@ import { IRecord } from '../models/IRecord.model';
 import { IAutoCompleteList } from '../models/IAutoCompleteList';
 import { IAutoComplete } from '../models/IAutoComplete';
 import { IAutoCompleteWords } from '../models/IAutoCompleteWords';
+import { IDropDownOptions } from '../models/IDropDownOptions.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,9 +21,21 @@ const httpOptions = {
 export class ExpensesService {
   DownloadFile(formId: any, recordId: any, columnName: any, itemName: any): Observable<any> {
     return this.http.get(`https://localhost:44379/api/Records/download/${formId}/${recordId}/${columnName}/${itemName}`,
-     {headers: new HttpHeaders({responseType: 'blob'}), responseType: 'blob'}).pipe(map((res) => {
-      return new Blob([res]);
-    }));
+      { headers: new HttpHeaders({ responseType: 'blob' }), responseType: 'blob' }).pipe(map((res) => {
+        return new Blob([res]);
+      }));
+  }
+
+  AddSelectList(_id: string, key: string, items: IDropDownOptions[]): any {
+    return this.http.post(`https://localhost:44379/api/Form/selectitems/${_id}/${key}`, items);
+  }
+
+  GetSelectList(formId: any, propertyName: any): Observable<any> {
+    return this.http.get<any>(`https://localhost:44379/api/Form/selectitems/${formId}/${propertyName}`);
+  }
+
+  AddSelectItem(formId: any, propertyId: any, label: any): Observable<any> {
+    return this.http.post(`https://localhost:44379/api/Form/selectitem/${formId}/${propertyId}`, label, httpOptions);
   }
 
   UploadFiles(formId: any, recordId: string, key: string, formData: FormData): any {
@@ -61,7 +74,6 @@ export class ExpensesService {
     return this.http.get<IMyForm[]>('https://localhost:44379/api/Form/form');
   }
 
-
   GetAllRecords(id: string): Observable<IRecord[]> {
     return this.http.get<IRecord[]>(`https://localhost:44379/api/Records/records/${id}`);
   }
@@ -77,8 +89,8 @@ export class ExpensesService {
     return this.http.put<IRecord>('https://localhost:44379/api/Records/record', record, httpOptions);
   }
 
-  DeleteRecord(id: string): any {
-    return this.http.delete<boolean>(`https://localhost:44379/api/Records/record/${id}`);
+  DeleteRecord(formId: string, id: string): any {
+    return this.http.delete<boolean>(`https://localhost:44379/api/Records/record/${formId}/${id}`);
   }
 
   constructor(private http: HttpClient) { }

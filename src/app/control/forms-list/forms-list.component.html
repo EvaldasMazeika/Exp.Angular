@@ -11,9 +11,11 @@
         </ng-container>
 
         <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <th mat-header-cell *matHeaderCellDef style="text-align: right;">Actions</th>
             <td mat-cell *matCellDef="let forms">
-                <button mat-mini-fab matTooltip="Instantly deletes form" (click)="onDelete(forms._id)" color="warn"><mat-icon>cancel</mat-icon></button>
+                <button mat-icon-button matTooltip="Deletes form" style="float: right;" (click)="onDelete(forms._id)">
+                    <mat-icon>cancel</mat-icon>
+                </button>
             </td>
         </ng-container>
 

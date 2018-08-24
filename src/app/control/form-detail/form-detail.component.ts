@@ -44,6 +44,10 @@ export class FormsDetailsComponent implements OnInit {
                     property.model.templateOptions.formId = this.form._id;
                     const listOfAutos: IAutoCompleteList = { formId: this.form._id, properties: [property.model.key] };
                     this.service.AddAutoCompletes(listOfAutos).subscribe();
+                } else if (property.model.type === 'selecListTags') {
+                  //  property.model.templateOptions.formId = this.form._id;
+                    const items = property.model.templateOptions.options;
+                    this.service.AddSelectList(this.form._id, property.model.key, items).subscribe();
                 }
                 this.form.items.push(property.model);
                 this.service.UpdateForm(this.form).subscribe(() => {

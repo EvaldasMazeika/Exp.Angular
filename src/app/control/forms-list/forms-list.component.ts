@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '../../../../node_modules/@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { IMyForm } from '../../models/IMyForm.model';
-import { MatTableDataSource, MatDialog, MatPaginator } from '../../../../node_modules/@angular/material';
+import { MatTableDataSource, MatDialog, MatPaginator } from '@angular/material';
 import { ExpensesService } from '../../services/expenses.service';
-import { Ng2IzitoastService } from '../../../../node_modules/ng2-izitoast';
-import { NewFormDialog } from './dialogs/newFormDialog.dialog';
+import { Ng2IzitoastService } from 'ng2-izitoast';
 import { LocalStorage } from '@ngx-pwa/local-storage';
+import { NewFormDialog } from './dialogs/newFormDialog.dialog';
+
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -13,17 +14,27 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 })
 
 export class FormsListComponent implements OnInit {
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
     forms: IMyForm[];
     displayedColumns: string[] = ['name', 'action'];
-
     dataSource = new MatTableDataSource();
+    isFormOpen = false;
 
-    constructor(private service: ExpensesService,
+    @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+        if (event.keyCode === 45 && !this.isFormOpen) {
+            this.isFormOpen = true;
+            this.openDialog();
+        }
+    }
+
+    constructor(
+        private service: ExpensesService,
         public iziToast: Ng2IzitoastService,
         public dialog: MatDialog,
         protected localStorage: LocalStorage) { }
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
     ngOnInit() {
         this.getForms();
         this.dataSource.paginator = this.paginator;
@@ -38,32 +49,17 @@ export class FormsListComponent implements OnInit {
 
     openDialog(): void {
         const dialogRef = this.dialog.open(NewFormDialog, {
-            width: '250px'
+            width: '250px',
+            data: { forms: this.forms }
         });
 
         dialogRef.afterClosed().subscribe(result => {
+            this.isFormOpen = false;
+
             if (result != null) {
-                this.TryAddForm(result.value);
+                this.forms.push(result);
+                this.dataSource.data = this.forms;
             }
-        });
-    }
-
-    TryAddForm(result) {
-        const title: string = result.title;
-        const isFound = this.forms.find(x => x.name === title.trim());
-        if (isFound != null) {
-            this.iziToast.error({ title: 'Form already exists' });
-        } else {
-            this.AddForm(title.trim());
-        }
-    }
-
-    AddForm(title) {
-        const form: IMyForm = { name: title, items: [] };
-        this.service.addForm(form).subscribe((cb) => {
-            this.forms.push(cb);
-            this.dataSource.data = this.forms;
-            this.iziToast.success({ title: 'Form added successfully' });
         });
     }
 
@@ -77,7 +73,7 @@ export class FormsListComponent implements OnInit {
             // check if it exists in localstorage, if then remove
             this.localStorage.getItem('form').subscribe((form) => {
                 if (form['formId'] === ids) {
-                    this.localStorage.removeItem('form').subscribe(() => {});
+                    this.localStorage.removeItem('form').subscribe(() => { });
                 }
             });
 

@@ -45,9 +45,9 @@ export class FormItemComponent implements OnInit {
           { label: 'Checkbox', value: 'checkbox' },
           { label: 'Select', value: 'selecListTags' },
           { label: 'Textarea', value: 'textarea' },
-          { label: 'Date', value: 'basicDatepicker' },
+          { label: 'Date', value: 'customDatePicker' },
           { label: 'Auto complete', value: 'autocomplete' },
-          { label: 'File input', value: 'fileInput'}
+          { label: 'File input', value: 'fileInput' }
         ]
       }
     },
@@ -83,13 +83,23 @@ export class FormItemComponent implements OnInit {
       hideExpression: 'model.type != "fileInput"'
     },
     {
-      key: 'templateOptions.isDateToday',
+      key: 'templateOptions.isTime',
       type: 'checkbox',
       templateOptions: {
-        label: 'Today as default value?',
+        label: 'Include time select?',
         required: false
       },
-      hideExpression: 'model.type != "basicDatepicker"'
+      hideExpression: 'model.type != "customDatePicker"'
+    },
+    {
+      key: 'templateOptions.dateFormat',
+      type: 'input',
+      defaultValue: 'dd-MM-yyyy',
+      templateOptions: {
+        label: 'Date/time picker format',
+        required: true
+      },
+      hideExpression: 'model.type != "customDatePicker"'
     },
     {
       key: 'defaultValue',
@@ -130,6 +140,7 @@ export class FormItemComponent implements OnInit {
 
   ngOnInit() { }
 
+  // DEPRECATED
   addOption(title: string) {
     title = title.trim();
     if (!title) {
