@@ -35,6 +35,7 @@ import { FormlyFieldFileInput } from './types/fileInput-type.component';
 import { CommonModule } from '@angular/common';
 import { SelectListTypeComponent } from './types/selectList-type.component';
 import { FormlyFieldCustomDate } from './types/customdatepicker-type.component';
+import { Error404Component } from './errors/404.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { FormlyFieldCustomDate } from './types/customdatepicker-type.component';
     FormlyFieldDate,
     ChosenTemplateComponent,
     FormlyFieldFileInput,
+    Error404Component,
     SelectListTypeComponent,
     FormlyFieldCustomDate
   ],

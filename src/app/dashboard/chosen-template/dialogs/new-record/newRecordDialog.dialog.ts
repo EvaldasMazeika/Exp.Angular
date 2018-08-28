@@ -35,6 +35,11 @@ export class NewRecordDialog implements OnInit {
         this.commonDialog = new CommonDialog(this.data);
         this.fields = this.data.form.items;
         this.options['formId'] = this.data.form._id;
+        this.service.getLatestRecord(this.data.form._id).subscribe((res) => {
+            if (res != null) {
+                this.model = res.body;
+            }
+        });
     }
 
     onCancelClick(): void {

@@ -4,15 +4,15 @@
     </div>
     <div fxLayout="row" fxLayoutAlign="start start" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start center">
         <mat-card>
-            <button type="button" mat-raised-button color="primary" (click)="onSelectProp({}, true)" style="margin:5px">Add
+            <button type="button" mat-raised-button color="primary" (click)="onPropertySelect({}, true)" style="margin:5px">Add
                 new property</button>
             <mat-divider></mat-divider>
             <div *ngIf="form">
                 <mat-nav-list>
-                    <mat-list-item *ngFor="let prop of form.items" (click)="onSelectProp(prop, false)">{{prop.key}}</mat-list-item>
+                    <mat-list-item *ngFor="let prop of form.items" (click)="onPropertySelect(prop, false)">{{prop.key}}</mat-list-item>
                 </mat-nav-list>
             </div>
         </mat-card>
-        <form-item [model]="selectedProp" [type]="selectedType" (removeProperty)="onRemoved($event)" (addOrUpdateProperty)="onAddOrUpdate($event)"></form-item>
+        <form-item [property]="selectedProperty" (removeProperty)="onRemoved($event)" (addProperty)="onAdded($event)" (updateProperty)="onUpdated($event)"></form-item>
     </div>
 </mat-card>

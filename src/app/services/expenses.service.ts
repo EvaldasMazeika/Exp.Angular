@@ -8,6 +8,7 @@ import { IAutoCompleteList } from '../models/IAutoCompleteList';
 import { IAutoComplete } from '../models/IAutoComplete';
 import { IAutoCompleteWords } from '../models/IAutoCompleteWords';
 import { IDropDownOptions } from '../models/IDropDownOptions.model';
+import { IProperty } from '../models/IProperty.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,6 +20,26 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ExpensesService {
+  getLatestRecord(_id: string): Observable<IRecord> {
+    return this.http.get<IRecord>(`https://localhost:44379/api/Records/recordby/${_id}`);
+  }
+
+  UpdateSelectList(formId: string, key: string, selectList: IDropDownOptions[]): any {
+    return this.http.put(`https://localhost:44379/api/Form/selectitems/${formId}/${key}`, selectList, httpOptions);
+  }
+
+  AddProperty(formId: string, model: IProperty): Observable<IProperty> {
+    return this.http.post<IProperty>(`https://localhost:44379/api/Form/property/${formId}`, model, httpOptions);
+  }
+
+  UpdateProperty(formId: string, model: IProperty): Observable<IProperty> {
+    return this.http.put<IProperty>(`https://localhost:44379/api/Form/property/${formId}`, model, httpOptions);
+  }
+
+  DeleteProperty(formId: string, key: string): any {
+    return this.http.delete<boolean>(`https://localhost:44379/api/Form/property/${formId}/${key}`);
+  }
+
   DownloadFile(formId: any, recordId: any, columnName: any, itemName: any): Observable<any> {
     return this.http.get(`https://localhost:44379/api/Records/download/${formId}/${recordId}/${columnName}/${itemName}`,
       { headers: new HttpHeaders({ responseType: 'blob' }), responseType: 'blob' }).pipe(map((res) => {

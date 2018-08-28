@@ -40,7 +40,7 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit {
       this.optionss = res.items;
 
       this.formControl.valueChanges.subscribe((value) => {
-        if (value.length >= 2) {
+        if (value != null && value.length >= 2) {
           this.filteredOptions = this._filter(value);
         } else {
           this.filteredOptions = [];

@@ -10,4 +10,5 @@ export interface ITemplateOptions {
     dateFormat?: string;
     isMultiFile?: boolean;
     options?: Array<IDropDownOptions>;
+    isExportable?: boolean;
 }

@@ -3,11 +3,12 @@
     <mat-list role="list">
       <form [formGroup]="form" (ngSubmit)="submit()">
         <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
-          <button *ngIf="type" type="submit" mat-flat-button color="primary" [disabled]="!form.valid" class="submit-button">Attach
-            to form</button>
+          <button *ngIf="typeOfProperty" type="submit" mat-flat-button color="primary" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)"
+            class="submit-button">Attach to form</button>
 
-          <button *ngIf="!type" type="submit" mat-flat-button color="primary" [disabled]="!form.valid" class="submit-button">Update</button>
-          <button *ngIf="!type" type="button" mat-flat-button color="warn" (click)="onPropRemove()">Remove</button>
+          <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="primary" (click)="onPropUpdate()" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)"
+            class="submit-button">Update</button>
+          <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="warn" (click)="onPropRemove()">Remove</button>
         </formly-form>
       </form>
     </mat-list>
@@ -23,8 +24,8 @@
       </mat-form-field>
 
     </div>
-    <mat-nav-list *ngIf="model.templateOptions.hasOwnProperty('options')" dense>
-      <mat-list-item *ngFor="let item of model.templateOptions.options">
+    <mat-nav-list *ngIf="selectList.length > 0" dense>
+      <mat-list-item *ngFor="let item of selectList">
         <button mat-icon-button (click)="removeOption(item.value)">
           <mat-icon>cancel</mat-icon>
         </button>{{item.label}}
