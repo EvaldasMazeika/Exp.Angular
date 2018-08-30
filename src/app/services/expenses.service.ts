@@ -20,6 +20,20 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ExpensesService {
+  UseTemplate(formId: string, formData: FormData): Observable<any> {
+    return this.http.post(`https://localhost:44379/api/Form/export/${formId}`, formData,
+      { headers: new HttpHeaders({ responseType: 'blob' }), responseType: 'blob' }).pipe(map((res) => {
+        return new Blob([res]);
+      }));
+  }
+
+  ExportTable(formId: string): Observable<any> {
+    return this.http.get(`https://localhost:44379/api/Form/export/${formId}`,
+      { headers: new HttpHeaders({ responseType: 'blob' }), responseType: 'blob' }).pipe(map((res) => {
+        return new Blob([res]);
+      }));
+  }
+
   getLatestRecord(_id: string): Observable<IRecord> {
     return this.http.get<IRecord>(`https://localhost:44379/api/Records/recordby/${_id}`);
   }

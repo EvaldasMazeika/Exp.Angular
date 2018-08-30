@@ -39,6 +39,8 @@
     "lodash": "^4.17.10",
     "ng2-izitoast": "^2.0.0",
     "ngx-material-file-input": "^0.2.0",
+    "primeicons": "^1.0.0-beta.10",
+    "primeng": "^6.1.2",
     "rxjs": "^6.2.2",
     "toastr": "^2.1.4",
     "zone.js": "^0.8.26"

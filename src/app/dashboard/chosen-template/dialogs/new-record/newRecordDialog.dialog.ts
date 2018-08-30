@@ -37,7 +37,29 @@ export class NewRecordDialog implements OnInit {
         this.options['formId'] = this.data.form._id;
         this.service.getLatestRecord(this.data.form._id).subscribe((res) => {
             if (res != null) {
-                this.model = res.body;
+                const tempModel = {};
+
+                for (const key in res.body) {
+                    if (res.body.hasOwnProperty(key)) {
+                        const item = this.data.form.items.find(w => w.key === key);
+                        if (item.type === 'primeCalendar') {
+                            tempModel[key] = new Date(res.body[key]);
+                        } else {
+                            tempModel[key] = res.body[key];
+                        }
+                    }
+                }
+                this.model = tempModel;
+            } else {
+                const tempModel = {};
+
+                this.fields.forEach(ele => {
+                    if (ele.type === 'primeCalendar') {
+                        tempModel[ele.key] = new Date();
+                    }
+                });
+
+                this.model = tempModel;
             }
         });
     }

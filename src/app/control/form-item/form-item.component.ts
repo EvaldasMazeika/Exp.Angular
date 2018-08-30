@@ -62,7 +62,7 @@ export class FormItemComponent implements OnInit, OnChanges {
           { label: 'Checkbox', value: 'checkbox' },
           { label: 'Select', value: 'selecListTags' },
           { label: 'Textarea', value: 'textarea' },
-          { label: 'Date', value: 'customDatePicker' },
+          { label: 'Date', value: 'primeCalendar' },
           { label: 'Auto complete', value: 'autocomplete' },
           { label: 'File input', value: 'fileInput' }
         ]
@@ -106,25 +106,26 @@ export class FormItemComponent implements OnInit, OnChanges {
         label: 'Include time select?',
         required: false
       },
-      hideExpression: 'model.type != "customDatePicker"'
+      hideExpression: 'model.type != "primeCalendar"'
     },
     {
       key: 'templateOptions.dateFormat',
       type: 'input',
+      defaultValue: 'dd-MM-yyyy',
       templateOptions: {
         label: 'Date/time picker format'
       },
       hideExpression: (model: any, formState: any) => {
-        if (model.type === 'customDatePicker') {
-          this.model.templateOptions.dateFormat = 'dd-MM-yyyy';
+        if (model.type === 'primeCalendar') {
+          // todo: saves default value to db
           return false;
         } else {
-          this.model.templateOptions.dateFormat = null;
+
           return true;
         }
       },
       expressionProperties: {
-        'templateOptions.required': 'model.type === "customDatePicker"'
+        'templateOptions.required': 'model.type === "primeCalendar"'
       }
     },
     {
@@ -132,14 +133,6 @@ export class FormItemComponent implements OnInit, OnChanges {
       type: 'input',
       templateOptions: {
         label: 'Default value'
-      }
-    },
-    {
-      key: 'templateOptions.placeholder',
-      type: 'input',
-      templateOptions: {
-        label: 'Placeholder',
-        required: false
       }
     },
     {
@@ -261,7 +254,7 @@ export class FormItemComponent implements OnInit, OnChanges {
       this.updateSelectList();
     }
 
-    this.service.UpdateProperty(this.formId, this.model).subscribe((res) =>  {
+    this.service.UpdateProperty(this.formId, this.model).subscribe((res) => {
       this.updateProperty.emit(this.model);
     });
   }

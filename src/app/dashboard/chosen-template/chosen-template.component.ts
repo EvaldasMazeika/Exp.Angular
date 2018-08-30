@@ -179,12 +179,25 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     }
 
     exportToExcel() {
-        alert('i lied');
+        this.service.ExportTable(this.formId).subscribe((res) => {
+            importedSaveAs(res, `${this.form.name}.xlsx`);
+        });
+    }
+
+    useTemplate($event) {
+        if ($event.target.files.length > 0) {
+            const formData: FormData = new FormData();
+            formData.append($event.target.files[0].name, $event.target.files[0]);
+            this.service.UseTemplate(this.formId, formData).subscribe((res) => {
+                importedSaveAs(res, `${this.form.name}.xlsx`);
+                $event.target.value = null;
+            });
+        }
     }
 
     isDateType(column: string): boolean {
         const element = this.form.items.find(x => x.key === column);
-        if (element != null && element.type === 'customDatePicker') {
+        if (element != null && element.type === 'primeCalendar') {
             this.tempDateFormat[column] = element.templateOptions.dateFormat;
             return true;
         } else {

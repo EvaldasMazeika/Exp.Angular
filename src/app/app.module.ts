@@ -11,6 +11,7 @@ import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
+import { CalendarModule } from 'primeng/calendar';
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
@@ -36,6 +37,7 @@ import { CommonModule } from '@angular/common';
 import { SelectListTypeComponent } from './types/selectList-type.component';
 import { FormlyFieldCustomDate } from './types/customdatepicker-type.component';
 import { Error404Component } from './errors/404.component';
+import { PrimeCalendar } from './types/primeCalendar-type.component';
 
 
 @NgModule({
@@ -57,7 +59,8 @@ import { Error404Component } from './errors/404.component';
     FormlyFieldFileInput,
     Error404Component,
     SelectListTypeComponent,
-    FormlyFieldCustomDate
+    FormlyFieldCustomDate,
+    PrimeCalendar
   ],
   imports: [
     BrowserModule,
@@ -74,13 +77,15 @@ import { Error404Component } from './errors/404.component';
     MaterialFileInputModule,
     NgSelectModule,
     AngularDateTimePickerModule,
+    CalendarModule,
     FormlyModule.forRoot({
       types: [
         { name: 'basicCheckbox', component: FormlyFieldCheckbox },
         { name: 'basicDatepicker', component: FormlyFieldDate },
-        { name: 'fileInput', component: FormlyFieldFileInput},
-        { name: 'selecListTags', component: SelectListTypeComponent},
-        { name: 'customDatePicker', component: FormlyFieldCustomDate},
+        { name: 'fileInput', component: FormlyFieldFileInput },
+        { name: 'selecListTags', component: SelectListTypeComponent },
+        { name: 'customDatePicker', component: FormlyFieldCustomDate },
+        { name: 'primeCalendar', component: PrimeCalendar },
         {
           name: 'autocomplete',
           component: AutocompleteTypeComponent,

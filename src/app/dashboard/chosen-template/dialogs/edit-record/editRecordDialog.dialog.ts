@@ -36,8 +36,26 @@ export class EditRecordDialog implements OnInit {
         this.commonDialog = new CommonDialog(this.data);
         this.fields = this.data.form.items;
         this.options['formId'] = this.data.form._id;
-        this.model = this.data.record;
+        this.model = this.AdjustModel(this.data.record);
     }
+
+    AdjustModel(record) {
+        const tempModel = {};
+        for (const key in record) {
+            if (record.hasOwnProperty(key)) {
+                const item = this.data.form.items.find(w => w.key === key);
+                if (item != null && item.type === 'primeCalendar') {
+                    tempModel[key] = new Date(record[key]);
+                } else {
+                    tempModel[key] = record[key];
+                }
+            }
+        }
+        return tempModel;
+    }
+
+
+
     onCancelClick(): void {
         this.dialogRef.close();
     }
@@ -59,8 +77,8 @@ export class EditRecordDialog implements OnInit {
             if (words.words.length > 0) {
                 this.service.AddWordsToAutoDictionaries(words).subscribe();
             }
-             this.dialogRef.close(cb);
-             this.iziToast.success({ title: 'Record updated successfully' });
+            this.dialogRef.close(cb);
+            this.iziToast.success({ title: 'Record updated successfully' });
         } else {
             this.iziToast.error({ title: 'Couldn\'t update form' });
             this.dialogRef.close();

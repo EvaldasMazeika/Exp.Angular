@@ -6,7 +6,7 @@ import { FieldType } from '@ngx-formly/core';
     // tslint:disable-next-line:component-selector
     selector: 'formly-field-customDate',
     template: `
-    <angular2-date-picker [formControl]="formControl"
+    <angular2-date-picker (onDateSelect)="onDateSelect($event)" [formControl]="formControl"
      [formlyAttributes]="field" [settings]="settings"></angular2-date-picker>
    `,
 })
@@ -25,4 +25,13 @@ export class FormlyFieldCustomDate extends FieldType implements OnInit {
         this.field.formControl.setValue(new Date());
 
     }
+
+    onDateSelect($event) {
+        const date = new Date($event);
+        console.log($event);
+        console.log(date);
+        console.log(date.toLocaleString());
+        this.field.formControl.setValue(date.toLocaleString());
+    }
+
 }

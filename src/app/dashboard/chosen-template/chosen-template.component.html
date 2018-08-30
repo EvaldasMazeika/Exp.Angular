@@ -4,6 +4,10 @@
         record </button>
     <button *ngIf="form?.items.length !== 0 && dataSource.data.length > 0" mat-raised-button (click)="exportToExcel()" style="margin: 5px">Export
         to excel</button>
+    <button *ngIf="form?.items.length !== 0 && dataSource.data.length > 0" mat-raised-button (click)="uploader.click()" style="margin: 5px">Export
+        using template</button>
+    <input hidden type="file" #uploader (change)="useTemplate($event)" />
+
     <div class="mat-elevation-z8" [hidden]="!dataSource.data.length > 0">
         <table mat-table [dataSource]="dataSource" style="width:100%">
             <ng-container matColumnDef="No">
