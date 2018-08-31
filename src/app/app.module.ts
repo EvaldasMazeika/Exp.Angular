@@ -10,7 +10,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { CalendarModule } from 'primeng/calendar';
 
 import { AppComponent } from './app.component';
@@ -28,14 +27,12 @@ import { FormlyModule } from '@ngx-formly/core';
 import { AutocompleteTypeComponent } from './types/autocomplete-type.component';
 import { FormlyFieldCheckbox } from './types/basicCheckbox-type.copmonent';
 import { NewFormDialog } from './control/forms-list/dialogs/newFormDialog.dialog';
-import { FormlyFieldDate } from './types/datepicker-type.component';
 import { ChosenTemplateComponent } from './dashboard/chosen-template/chosen-template.component';
 import { NewRecordDialog } from './dashboard/chosen-template/dialogs/new-record/newRecordDialog.dialog';
 import { EditRecordDialog } from './dashboard/chosen-template/dialogs/edit-record/editRecordDialog.dialog';
 import { FormlyFieldFileInput } from './types/fileInput-type.component';
 import { CommonModule } from '@angular/common';
 import { SelectListTypeComponent } from './types/selectList-type.component';
-import { FormlyFieldCustomDate } from './types/customdatepicker-type.component';
 import { Error404Component } from './errors/404.component';
 import { PrimeCalendar } from './types/primeCalendar-type.component';
 
@@ -54,12 +51,10 @@ import { PrimeCalendar } from './types/primeCalendar-type.component';
     EditRecordDialog,
     FormlyFieldCheckbox,
     AutocompleteTypeComponent,
-    FormlyFieldDate,
     ChosenTemplateComponent,
     FormlyFieldFileInput,
     Error404Component,
     SelectListTypeComponent,
-    FormlyFieldCustomDate,
     PrimeCalendar
   ],
   imports: [
@@ -76,15 +71,12 @@ import { PrimeCalendar } from './types/primeCalendar-type.component';
     FormlyMatDatepickerModule,
     MaterialFileInputModule,
     NgSelectModule,
-    AngularDateTimePickerModule,
     CalendarModule,
     FormlyModule.forRoot({
       types: [
         { name: 'basicCheckbox', component: FormlyFieldCheckbox },
-        { name: 'basicDatepicker', component: FormlyFieldDate },
         { name: 'fileInput', component: FormlyFieldFileInput },
         { name: 'selecListTags', component: SelectListTypeComponent },
-        { name: 'customDatePicker', component: FormlyFieldCustomDate },
         { name: 'primeCalendar', component: PrimeCalendar },
         {
           name: 'autocomplete',

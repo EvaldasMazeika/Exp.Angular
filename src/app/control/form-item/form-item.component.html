@@ -1,35 +1,38 @@
-<div *ngIf="model" div fxLayout="row" fxLayoutAlign="start start" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start center">
-  <mat-card>
-    <mat-list role="list">
-      <form [formGroup]="form" (ngSubmit)="submit()">
-        <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
-          <button *ngIf="typeOfProperty" type="submit" mat-flat-button color="primary" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)"
-            class="submit-button">Attach to form</button>
+<div *ngIf="model">
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <mat-card>
+      <mat-list role="list">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
+            <button *ngIf="typeOfProperty" type="submit" mat-flat-button color="primary" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)"
+              class="submit-button">Attach to form</button>
 
-          <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="primary" (click)="onPropUpdate()" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)"
-            class="submit-button">Update</button>
-          <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="warn" (click)="onPropRemove()">Remove</button>
-        </formly-form>
-      </form>
-    </mat-list>
-  </mat-card>
-  <mat-card *ngIf="model.type === 'selecListTags'">
-    <h1 class="display-4">Options</h1>
-    <div>
-      <mat-form-field>
+            <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="primary" (click)="onPropUpdate()" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)"
+              class="submit-button">Update</button>
+            <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="warn" (click)="onPropRemove()">Remove</button>
+          </formly-form>
+        </form>
+      </mat-list>
+    </mat-card>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4">
+    <mat-card *ngIf="model.type === 'selecListTags'">
+      <h2 class="mat-title">Options</h2>
+      <mat-form-field style="width: 100%">
         <input #optionTitle matInput placeholder="Option title" value="">
-        <button mat-button matSuffix mat-icon-button (click)="addOption(optionTitle.value); optionTitle.value=''" aria-label="Add">
+        <button mat-button matSuffix mat-icon-button matTooltip="Add new option" (click)="addOption(optionTitle.value); optionTitle.value=''"
+          aria-label="Add">
           <mat-icon>add</mat-icon>
         </button>
       </mat-form-field>
-
-    </div>
-    <mat-nav-list *ngIf="selectList.length > 0" dense>
-      <mat-list-item *ngFor="let item of selectList">
-        <button mat-icon-button (click)="removeOption(item.value)">
-          <mat-icon>cancel</mat-icon>
-        </button>{{item.label}}
-      </mat-list-item>
-    </mat-nav-list>
-  </mat-card>
+      <mat-divider></mat-divider>
+      <mat-nav-list *ngIf="selectList.length > 0" dense>
+        <mat-list-item *ngFor="let item of selectList">
+          <button mat-icon-button matTooltip="Remove option" (click)="removeOption(item.value)">
+            <mat-icon>cancel</mat-icon>
+          </button>{{item.label}}
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-card>
+  </div>
 </div>

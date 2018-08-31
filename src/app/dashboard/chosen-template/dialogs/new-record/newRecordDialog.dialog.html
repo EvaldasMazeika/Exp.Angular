@@ -1,8 +1,9 @@
 <form autocomplete="off" [formGroup]="form" (ngSubmit)="submitNewRecord()">
-    <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
-        <div mat-dialog-actions>
-            <button mat-button type="button" (click)="onCancelClick()">Cancel</button>
-            <button mat-raised-button color="primary" type="submit" matTooltip="Create record" [disabled]="!form.valid" style="margin-left:10px">Add</button>
-        </div>
-    </formly-form>
+    <mat-dialog-content>
+        <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button type="button" (click)="onCancelClick()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" matTooltip="Create record" [disabled]="!form.valid" style="margin-left:10px">Add</button>
+    </mat-dialog-actions>
 </form>

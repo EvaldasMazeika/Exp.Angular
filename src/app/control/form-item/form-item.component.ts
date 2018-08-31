@@ -27,6 +27,7 @@ export class FormItemComponent implements OnInit, OnChanges {
   formId: string;
   keysOfProperties: any;
   propertyType = '';
+  specialKeywords = ['No', 'no', 'Actions', 'actions'];
 
   form = new FormGroup({});
   model: IProperty;
@@ -48,6 +49,10 @@ export class FormItemComponent implements OnInit, OnChanges {
         name: {
           expression: (c) => !c.value || (this.typeOfProperty && this.keysOfProperties.find(x => x === c.value.trim()) == null),
           message: (error, field: FormlyFieldConfig) => `Key already exists`
+        },
+        special: {
+          expression: (c) => !c.value || (this.typeOfProperty && this.specialKeywords.find(x => x === c.value.trim()) == null),
+          message: (error, field: FormlyFieldConfig) => `Cannot be used as special keyword`
         }
       }
     },

@@ -5,7 +5,7 @@ import { ExpensesService } from '../services/expenses.service';
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'formly-selectlist-type',
-  template: `<ng-select [items]="selects" appendTo="body"
+  template: `<ng-select [placeholder]="placeholder" [items]="selects" appendTo="body"
      [formControl]="formControl" [formlyAttributes]="field"
      [addTag]="addT" bindValue="value" bindLabel="label" (change)="onChange($event)">
     </ng-select>`
@@ -15,6 +15,7 @@ export class SelectListTypeComponent extends FieldType implements OnInit {
 
   formId: any;
   propertyName: any;
+  placeholder: string;
 
   selects = [];
   constructor(public service: ExpensesService) {
@@ -24,9 +25,13 @@ export class SelectListTypeComponent extends FieldType implements OnInit {
   loading = false;
   ngOnInit() {
     super.ngOnInit();
+    this.placeholder = this.to.label;
+    if (this.to.required) {
+      this.placeholder = `${this.placeholder} *`;
+    }
+
     this.formId = this.options['formId'];
     this.propertyName = this.field.key;
-
     this.service.GetSelectList(this.formId, this.propertyName).subscribe((res) => {
       this.selects = res;
     });

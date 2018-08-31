@@ -42,9 +42,11 @@ export class NewRecordDialog implements OnInit {
                 for (const key in res.body) {
                     if (res.body.hasOwnProperty(key)) {
                         const item = this.data.form.items.find(w => w.key === key);
-                        if (item.type === 'primeCalendar') {
+                        if (item.type === 'primeCalendar' && res.body[key] != null) {
                             tempModel[key] = new Date(res.body[key]);
-                        } else {
+                        } else if (item.type === 'fileInput') {
+                            tempModel[key] = null;
+                        }  else {
                             tempModel[key] = res.body[key];
                         }
                     }
@@ -54,11 +56,10 @@ export class NewRecordDialog implements OnInit {
                 const tempModel = {};
 
                 this.fields.forEach(ele => {
-                    if (ele.type === 'primeCalendar') {
+                    if (ele.type === 'primeCalendar' && ele.templateOptions.required) {
                         tempModel[ele.key] = new Date();
                     }
                 });
-
                 this.model = tempModel;
             }
         });

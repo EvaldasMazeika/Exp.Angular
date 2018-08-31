@@ -1,26 +1,29 @@
-<h1 class="mat-display-1">Forms</h1>
-<button mat-raised-button (click)="openDialog()" style="margin: 5px"> Add Form </button>
-
-<div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" style="width: 100%">
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Title</th>
-            <td mat-cell *matCellDef="let forms">
-                <a routerLink="/control/form/{{forms._id}}">{{forms.name}}</a>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef style="text-align: right;">Actions</th>
-            <td mat-cell *matCellDef="let forms">
-                <button mat-icon-button matTooltip="Deletes form" style="float: right;" (click)="onDelete(forms._id)">
-                    <mat-icon>cancel</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-xl-12">
+        <h2 class="mat-display-2" style="color:#3B5998">Forms</h2>
+        <mat-card>
+            <button mat-raised-button (click)="openDialog()" style="margin: 5px"> Add Form </button>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" style="width: 100%">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Title</th>
+                        <td mat-cell *matCellDef="let forms">
+                            <a routerLink="/control/form/{{forms._id}}">{{forms.name}}</a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: right;">Actions</th>
+                        <td mat-cell *matCellDef="let forms">
+                            <button mat-icon-button matTooltip="Deletes form" style="float: right;" (click)="onDelete(forms._id)">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-card>
+    </div>
 </div>

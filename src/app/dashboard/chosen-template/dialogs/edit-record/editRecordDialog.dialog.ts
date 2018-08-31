@@ -44,7 +44,7 @@ export class EditRecordDialog implements OnInit {
         for (const key in record) {
             if (record.hasOwnProperty(key)) {
                 const item = this.data.form.items.find(w => w.key === key);
-                if (item != null && item.type === 'primeCalendar') {
+                if (item != null && item.type === 'primeCalendar' && record[key] != null) {
                     tempModel[key] = new Date(record[key]);
                 } else {
                     tempModel[key] = record[key];

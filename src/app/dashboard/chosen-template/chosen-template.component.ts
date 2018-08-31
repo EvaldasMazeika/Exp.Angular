@@ -67,9 +67,8 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
 
     openNewRecordDialog() {
         const dialogRef = this.dialog.open(NewRecordDialog, {
-            width: '500px',
-            data: { form: this.form },
-            panelClass: 'mytest-overflow'
+            width: '80%',
+            data: { form: this.form }
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -93,12 +92,11 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
 
     openEditRecordDialog(recordId: string) {
         const dialogRef = this.dialog.open(EditRecordDialog, {
-            width: '500px',
+            width: '80%',
             data: {
                 record: _.cloneDeep(this.dataSource.data.find(w => w['_id'] === recordId)),
                 form: this.form
-            },
-            panelClass: 'mytest-overflow'
+            }
         });
 
         dialogRef.afterClosed().subscribe(result => {
