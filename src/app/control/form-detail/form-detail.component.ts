@@ -41,7 +41,7 @@ export class FormsDetailsComponent implements OnInit {
         });
     }
 
-    onPropertySelect(prop: IProperty, isNew: boolean) {
+    onPropertySelect(isNew: boolean, prop: IProperty = {templateOptions: {}}) {
         if (isNew) {
             this.selectedProperty = {
                 isNew: isNew,
