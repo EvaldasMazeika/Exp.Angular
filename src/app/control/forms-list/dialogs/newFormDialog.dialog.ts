@@ -31,7 +31,7 @@ export class NewFormDialog implements OnInit {
             },
             validators: {
                 name: {
-                    expression: (c) => !c.value || this.data.forms.find(x => x.name === c.value.trim()) == null,
+                    expression: (c) => !c.value || ( this.data && this.data.forms.find(x => x.name === c.value.trim()) == null),
                     message: (error, field: FormlyFieldConfig) => `title already exists`
                 }
             }

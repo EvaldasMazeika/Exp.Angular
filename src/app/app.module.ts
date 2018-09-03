@@ -6,7 +6,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { Ng2IziToastModule } from 'ng2-izitoast';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -67,7 +66,6 @@ import { PrimeCalendar } from './types/primeCalendar-type.component';
     BrowserAnimationsModule,
     FormlyMaterialModule,
     Ng2IziToastModule,
-    FlexLayoutModule,
     FormlyMatDatepickerModule,
     MaterialFileInputModule,
     NgSelectModule,
