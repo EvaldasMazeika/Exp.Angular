@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
     form = new FormGroup({});
     model: any = {};
     options: FormlyFormOptions = {};
-    constructor(private router: Router,
+    constructor(public router: Router,
         private service: ExpensesService,
         protected localStorage: LocalStorage,
         private transfer: TransferDataService) { }
