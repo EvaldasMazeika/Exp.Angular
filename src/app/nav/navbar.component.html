@@ -1,14 +1,17 @@
 <mat-toolbar color="accent">
-    <span>ExpE</span>
-    <button [routerLink]="['dashboard']" mat-button>Dashboard</button>
-    <button [routerLink]="['control']" mat-button>Forms control</button>
-    <span class="example-fill-remaining-space" style="flex:1 1 auto"></span>
-
-    <span *ngIf="router.url === '/dashboard'">
-        <form  [formGroup]="form" style="font-size: 15px">
-                <formly-form (modelChange)="selectChange()" [model]="model" [fields]="fields" [options]="options" [form]="form">
-                </formly-form>
-            </form>
-    </span>
-
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-4">
+            <span>ExpE</span>
+            <button [routerLink]="['dashboard']" mat-button>Dashboard</button>
+            <button [routerLink]="['control']" mat-button>Forms control</button>
+        </div>
+        <div class="ui-g-12 ui-md-2 ui-md-offset-6" style="align-self: center;padding: 0;">
+            <span *ngIf="router.url === '/dashboard'">
+                <form [formGroup]="form" style="font-size: 15px">
+                    <formly-form (modelChange)="selectChange()" [model]="model" [fields]="fields" [options]="options" [form]="form">
+                    </formly-form>
+                </form>
+            </span>
+        </div>
+    </div>
 </mat-toolbar>

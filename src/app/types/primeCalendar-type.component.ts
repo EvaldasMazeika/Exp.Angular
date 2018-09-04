@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
 @Component({
@@ -25,7 +25,7 @@ import { FieldType } from '@ngx-formly/core';
 })
 
 // tslint:disable-next-line:component-class-suffix
-export class PrimeCalendar extends FieldType implements OnInit, OnChanges {
+export class PrimeCalendar extends FieldType implements OnInit {
     dateFormat: any;
     isTime: boolean;
     isReq = '';

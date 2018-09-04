@@ -53,6 +53,8 @@ export class NewRecordDialog implements OnInit {
                             }
                         } else if (item.templateOptions.isPopulated === true && item.type !== 'fileInput') {
                             tempModel[key] = res.body[key];
+                        } else if (item.type === 'input' && item.defaultValue != null) {
+                            tempModel[key] = item.defaultValue;
                         } else {
                             tempModel[key] = null;
                         }

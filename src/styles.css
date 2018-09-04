@@ -21,3 +21,7 @@ body p-calendar.ng-dirty.ng-invalid > .ui-calendar > .ui-inputtext {
     border: none !important;
     border-bottom:1px solid #f44336 !important;
 }
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+    display: table !important;
+}

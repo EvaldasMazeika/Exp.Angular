@@ -81,8 +81,7 @@ export class FormItemComponent implements OnInit, OnChanges {
         required: false,
         options: [
           { label: '', value: '' },
-          { label: 'Number', value: 'number' },
-          { label: 'Password', value: 'password' }
+          { label: 'Number', value: 'number' }
         ]
       },
       hideExpression: 'model.type != "input"'
@@ -138,6 +137,13 @@ export class FormItemComponent implements OnInit, OnChanges {
       type: 'input',
       templateOptions: {
         label: 'Default value'
+      },
+      hideExpression: (model: any, formState: any) => {
+        if (model.type === 'input' && (model.templateOptions.type === '') || model.templateOptions.type == null) {
+          return false;
+        } else {
+          return true;
+        }
       }
     },
     {
@@ -209,14 +215,14 @@ export class FormItemComponent implements OnInit, OnChanges {
     value = value.trim();
     if (!value) {
       this.iziToast.info({ title: 'Specify correct value' });
-    }
-
-    const item = this.selectList.find(w => w.value === value);
-    if (item != null) {
-      this.iziToast.error({ title: 'Option alredy exists' });
     } else {
-      const newOpt: IDropDownOptions = { value: value, label: value };
-      this.selectList.push(newOpt);
+      const item = this.selectList.find(w => w.value === value);
+      if (item != null) {
+        this.iziToast.error({ title: 'Option alredy exists' });
+      } else {
+        const newOpt: IDropDownOptions = { value: value, label: value };
+        this.selectList.push(newOpt);
+      }
     }
   }
 
