@@ -7,3 +7,17 @@ body {
     font-family: Roboto, sans-serif;
     background-color: #eaeaea;
 }
+
+body .ui-inputtext {
+    border: none !important;
+    border-bottom:1px solid rgba(0,0,0,.42) !important;
+}
+
+body .ui-corner-all {
+    border-radius: 0% !important;
+}
+
+body p-calendar.ng-dirty.ng-invalid > .ui-calendar > .ui-inputtext {
+    border: none !important;
+    border-bottom:1px solid #f44336 !important;
+}

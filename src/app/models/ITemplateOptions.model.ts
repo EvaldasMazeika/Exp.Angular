@@ -10,4 +10,5 @@ export interface ITemplateOptions {
     isMultiFile?: boolean;
     options?: Array<IDropDownOptions>;
     isExportable?: boolean;
+    isPopulated?: boolean;
 }

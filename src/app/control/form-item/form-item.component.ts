@@ -155,9 +155,15 @@ export class FormItemComponent implements OnInit, OnChanges {
       templateOptions: {
         label: 'Is exportable?'
       }
+    },
+    {
+      key: 'templateOptions.isPopulated',
+      type: 'basicCheckbox',
+      defaultValue: false,
+      templateOptions: {
+        label: 'Is prepopulated?'
+      }
     }
-
-
   ];
 
   constructor(
