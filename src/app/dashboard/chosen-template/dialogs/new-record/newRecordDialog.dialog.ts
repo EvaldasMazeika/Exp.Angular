@@ -79,7 +79,7 @@ export class NewRecordDialog implements OnInit {
     }
 
     async submitNewRecord() {
-        if (this.form.valid === true) {
+        if (this.form.valid === true && this.CheckForGroups()) {
             const files = this.commonDialog.checkForFileUpload(this.model);
             const record: IRecord = { formId: this.data.form._id, body: this.model };
 
@@ -95,9 +95,34 @@ export class NewRecordDialog implements OnInit {
             }
             this.dialogRef.close(cb);
             this.iziToast.success({ title: 'Record added successfully' });
+        }
+    }
+    CheckForGroups(): boolean {
+        const groups = {};
+        let allGood = true;
+
+        this.fields.forEach(element => {
+            if (element.templateOptions.hasGroup) {
+                if (!groups.hasOwnProperty(element.templateOptions.groupName)) {
+                    groups[element.templateOptions.groupName] = [];
+                }
+                let item = this.model[element.key];
+                if (item != null && item.trim().length === 0) {
+                    item = null;
+
+                }
+                groups[element.templateOptions.groupName].push(item);
+                const count = groups[element.templateOptions.groupName].filter(x => x != null);
+                if (count.length > 1) {
+                    allGood = false;
+                }
+            }
+        });
+        if (allGood) {
+            return true;
         } else {
-            this.iziToast.error({ title: 'Couldn\'t save form' });
-            this.dialogRef.close();
+            this.iziToast.error({ title: `Only one input allowed per group` });
+            return false;
         }
     }
 

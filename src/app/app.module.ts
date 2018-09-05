@@ -72,7 +72,16 @@ import { PrimeCalendar } from './types/primeCalendar-type.component';
     CalendarModule,
     FormlyModule.forRoot({
       types: [
-        { name: 'basicCheckbox', component: FormlyFieldCheckbox },
+        {
+          name: 'basicCheckbox', component: FormlyFieldCheckbox, wrappers: ['form-field'], defaultOptions: {
+            templateOptions: {
+              hideFieldUnderline: true,
+              floatLabel: 'always',
+              hideLabel: true,
+              align: 'start',
+            }
+          }
+        },
         { name: 'fileInput', component: FormlyFieldFileInput },
         { name: 'selecListTags', component: SelectListTypeComponent },
         { name: 'primeCalendar', component: PrimeCalendar },

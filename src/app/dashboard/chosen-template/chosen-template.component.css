@@ -1,0 +1,15 @@
+.mat-table {
+    overflow-x: auto; 
+    display: inherit;
+}
+
+.mat-cell,
+.mat-header-cell {
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+    line-break: unset;
+    word-wrap: initial;
+    padding: 0px 5px;
+    width: 100rem;
+}

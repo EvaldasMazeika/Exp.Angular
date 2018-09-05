@@ -7,7 +7,7 @@ import { FieldType } from '@ngx-formly/core';
     template: `
     <div class="ui-g ui-fluid">
         <div class="ui-g-12" style="padding-left: 0px;">
-            <span [class.goodKlass]="formControl.valid"  [class.errorKlass]="!formControl.valid" style="font-size: 14px;">
+            <span [class.goodKlass]="formControl.valid"  [class.errorKlass]="!formControl.valid" style="font-size: 13px;">
             {{to.label}} {{isReq}}</span>
             <p-calendar [formControl]="formControl"
              [showTime]="isTime" [formlyAttributes]="field" [showIcon]="true"></p-calendar>

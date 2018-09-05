@@ -64,7 +64,7 @@ export class FormItemComponent implements OnInit, OnChanges {
         required: true,
         options: [
           { label: 'Input', value: 'input' },
-          { label: 'Checkbox', value: 'checkbox' },
+          { label: 'Checkbox', value: 'basicCheckbox' },
           { label: 'Select', value: 'selecListTags' },
           { label: 'Textarea', value: 'textarea' },
           { label: 'Date', value: 'primeCalendar' },
@@ -147,11 +147,45 @@ export class FormItemComponent implements OnInit, OnChanges {
       }
     },
     {
+      key: 'templateOptions.hasGroup',
+      type: 'basicCheckbox',
+      defaultValue: false,
+      templateOptions: {
+        label: 'Belongs to group?'
+      },
+      hideExpression: (model: any, formState: any) => {
+        if (model.type === 'primeCalendar') {
+          model.templateOptions.hasGroup = false;
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
+    {
+      key: 'templateOptions.groupName',
+      type: 'input',
+      templateOptions: {
+        label: 'Group Name'
+      },
+      hideExpression: 'model.templateOptions.hasGroup != true'
+    },
+    {
       key: 'templateOptions.required',
       type: 'basicCheckbox',
       defaultValue: false,
       templateOptions: {
         label: 'Is required?'
+      },
+      expressionProperties: {
+        'templateOptions.disabled': (model: any, formState: any) => {
+          if (model.templateOptions.hasGroup) {
+            model.templateOptions.required = false;
+            return true;
+          } else {
+            return false;
+          }
+        },
       }
     },
     {
@@ -168,7 +202,17 @@ export class FormItemComponent implements OnInit, OnChanges {
       defaultValue: false,
       templateOptions: {
         label: 'Is prepopulated?'
-      }
+      },
+      expressionProperties: {
+        'templateOptions.disabled': (model: any, formState: any) => {
+          if (model.templateOptions.hasGroup) {
+            model.templateOptions.isPopulated = false;
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
     }
   ];
 

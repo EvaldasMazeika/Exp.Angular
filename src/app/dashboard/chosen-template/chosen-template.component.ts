@@ -12,7 +12,8 @@ import { saveAs as importedSaveAs } from 'file-saver';
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'chosen-template',
-    templateUrl: './chosen-template.component.html'
+    templateUrl: './chosen-template.component.html',
+    styleUrls: ['./chosen-template.component.css']
 
 })
 

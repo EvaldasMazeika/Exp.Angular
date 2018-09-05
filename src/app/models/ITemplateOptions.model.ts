@@ -11,4 +11,6 @@ export interface ITemplateOptions {
     options?: Array<IDropDownOptions>;
     isExportable?: boolean;
     isPopulated?: boolean;
+    hasGroup?: boolean;
+    groupName?: string;
 }
