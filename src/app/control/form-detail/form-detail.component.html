@@ -1,9 +1,13 @@
-<div class="ui-g">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-xl-12">
-        <h2 class="mat-display-2" style="color:#3B5998">{{form?.name}}</h2>
-        <div class="ui-g-12 ui-md-6 ui-lg-4">
+<div class="container">
+    <div class="p-grid p-nogutter">
+        <div class="p-col-12">
+            <h2 class="mat-display-2" style="color:#3B5998">{{form?.name}}</h2>
+        </div>
+        <div class="p-col-12 p-lg-4">
             <mat-card>
-                <button type="button" mat-raised-button color="primary" (click)="onPropertySelect(true, undefined)" style="margin:5px">New property</button>
+                <button type="button" mat-raised-button color="primary" (click)="onPropertySelect(true, undefined)"
+                    style="margin:5px">New
+                    property</button>
                 <mat-divider></mat-divider>
                 <div *ngIf="form">
                     <mat-nav-list>
@@ -11,8 +15,10 @@
                     </mat-nav-list>
                 </div>
             </mat-card>
-
         </div>
-        <form-item [property]="selectedProperty" (removeProperty)="onRemoved($event)" (addProperty)="onAdded($event)" (updateProperty)="onUpdated($event)"></form-item>
+        <div class="p-col-12 p-lg-8">
+            <form-item [property]="selectedProperty" (removeProperty)="onRemoved($event)" (addProperty)="onAdded($event)"
+                (updateProperty)="onUpdated($event)"></form-item>
+        </div>
     </div>
 </div>

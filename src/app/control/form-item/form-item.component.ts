@@ -77,7 +77,7 @@ export class FormItemComponent implements OnInit, OnChanges {
       key: 'templateOptions.type',
       type: 'select',
       templateOptions: {
-        label: 'SubType',
+        label: 'Sub type',
         required: false,
         options: [
           { label: '', value: '' },
@@ -98,14 +98,14 @@ export class FormItemComponent implements OnInit, OnChanges {
       key: 'templateOptions.isMultiFile',
       type: 'basicCheckbox',
       templateOptions: {
-        label: 'Can do multi files?',
+        label: 'Accepts multi files?',
         required: false
       },
       hideExpression: 'model.type != "fileInput"'
     },
     {
       key: 'templateOptions.isTime',
-      type: 'checkbox',
+      type: 'basicCheckbox',
       templateOptions: {
         label: 'Include time select?',
         required: false
@@ -124,7 +124,6 @@ export class FormItemComponent implements OnInit, OnChanges {
           // todo: saves default value to db
           return false;
         } else {
-
           return true;
         }
       },
@@ -139,9 +138,10 @@ export class FormItemComponent implements OnInit, OnChanges {
         label: 'Default value'
       },
       hideExpression: (model: any, formState: any) => {
-        if (model.type === 'input' && (model.templateOptions.type === '') || model.templateOptions.type == null) {
+        if (model.type === 'input' && (model.templateOptions.type === '' || model.templateOptions.type == null)) {
           return false;
         } else {
+          model.defaultValue = null;
           return true;
         }
       }
@@ -154,7 +154,7 @@ export class FormItemComponent implements OnInit, OnChanges {
         label: 'Belongs to group?'
       },
       hideExpression: (model: any, formState: any) => {
-        if (model.type === 'primeCalendar') {
+        if (model.type === 'primeCalendar' || model.type === 'fileInput') {
           model.templateOptions.hasGroup = false;
           return true;
         } else {
@@ -194,7 +194,17 @@ export class FormItemComponent implements OnInit, OnChanges {
       defaultValue: true,
       templateOptions: {
         label: 'Is exportable?'
-      }
+      },
+      expressionProperties: {
+        'templateOptions.disabled': (model: any, formState: any) => {
+          if (model.type === 'fileInput') {
+            model.templateOptions.isExportable = false;
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
     },
     {
       key: 'templateOptions.isPopulated',
@@ -205,7 +215,7 @@ export class FormItemComponent implements OnInit, OnChanges {
       },
       expressionProperties: {
         'templateOptions.disabled': (model: any, formState: any) => {
-          if (model.templateOptions.hasGroup) {
+          if (model.templateOptions.hasGroup || model.type === 'fileInput') {
             model.templateOptions.isPopulated = false;
             return true;
           } else {

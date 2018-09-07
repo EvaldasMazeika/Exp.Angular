@@ -72,7 +72,7 @@ export class FormsListComponent implements OnInit {
 
             // check if it exists in localstorage, if then remove
             this.localStorage.getItem('form').subscribe((form) => {
-                if (form['formId'] === ids) {
+                if (form != null && form['formId'] === ids) {
                     this.localStorage.removeItem('form').subscribe(() => { });
                 }
             });

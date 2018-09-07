@@ -14,7 +14,7 @@ import { FieldType } from '@ngx-formly/core';
         </div>
     </div>
    `,
-   styles: [`
+    styles: [`
     .errorKlass {
         color: red;
     }

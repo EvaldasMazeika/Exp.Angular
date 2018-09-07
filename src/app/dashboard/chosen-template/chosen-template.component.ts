@@ -8,6 +8,7 @@ import { IRecord } from '../../models/IRecord.model';
 import { NewRecordDialog } from './dialogs/new-record/newRecordDialog.dialog';
 import * as _ from 'lodash';
 import { saveAs as importedSaveAs } from 'file-saver';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -29,14 +30,18 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     tempDateFormat: any = {};
     isNewRecordFormOpen = false;
     rowsNumbers: any = {};
+    selectListItems: string[];
+    selectedOptions: string[];
 
     constructor(
         private service: ExpensesService,
         public iziToast: Ng2IzitoastService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        protected localStorage: LocalStorage
     ) { }
     ngOnInit() {
         this.dataSource.paginator = this.paginator;
+
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -53,7 +58,7 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
         if (formId.currentValue != null) {
             this.form = await this.getForm(formId.currentValue);
             if (this.form != null) {
-                this.AttachRecords(await this.getRecords(formId.currentValue));
+                await this.AttachRecords(await this.getRecords(formId.currentValue));
             }
         }
     }
@@ -78,6 +83,9 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
                 const temp: any = Object.assign({}, result.body);
 
                 this.columnsToDisplay = this.adjustHeaders(temp);
+                this.selectListItems = this.adjustHeaders(temp);
+                this.selectedOptions = this.selectListItems.slice(1, this.selectListItems.length - 1);
+
                 temp._id = result._id;
                 if (this.dataSource.data.length > 0) {
                     this.rowsNumbers[temp._id] = this.rowsNumbers[this.dataSource.data[this.dataSource.data.length - 1]['_id']] + 1;
@@ -105,6 +113,8 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
                 const temp: any = Object.assign({}, result.body);
 
                 this.columnsToDisplay = this.adjustHeaders(temp);
+                this.selectListItems = this.adjustHeaders(temp);
+                this.selectedOptions = this.selectListItems.slice(1, this.selectListItems.length - 1);
                 temp._id = result._id;
 
                 const updateItem = this.dataSource.data.find(w => w['_id'] === result._id);
@@ -132,10 +142,32 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
         return headers;
     }
 
-    AttachRecords(records: IRecord[]): void {
-        this.columnsToDisplay = this.getHeaders(records);
+    async AttachRecords(records: IRecord[]) {
+        this.columnsToDisplay = await this.SelectedColumns(records);
         this.dataSource.data = this.modifyRecords(records);
         this.dataSource.paginator = this.paginator;
+    }
+
+    async SelectedColumns(records: IRecord[]) {
+        let ignoredColumns: string[] = await this.getIgoredColumns();
+        const allHeaders = this.getHeaders(records);
+        this.selectListItems = this.getHeaders(records);
+        if (ignoredColumns == null) {
+            ignoredColumns = [];
+        }
+        ignoredColumns.forEach((ele) => {
+            const index = allHeaders.findIndex(w => w === ele);
+            allHeaders.splice(index, 1);
+        });
+
+        this.selectedOptions = allHeaders.slice(1, allHeaders.length - 1);
+
+        return allHeaders;
+    }
+
+    async getIgoredColumns() {
+        const items = await this.localStorage.getItem(this.form.name).toPromise();
+        return items;
     }
 
     modifyRecords(records: IRecord[]): any[] {
@@ -217,5 +249,25 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
             this.dataSource._updateChangeSubscription();
             this.iziToast.success({ title: 'Record deleted successfully' });
         });
+    }
+
+    async selectList($event) {
+        let items: string[] = await this.getIgoredColumns();
+        if (items == null) {
+            items = [];
+        }
+        if ($event.option.selected) {
+            const index = items.findIndex(w => w === $event.option.value);
+            items.splice(index, 1);
+            this.localStorage.setItem(this.form.name, items).subscribe();
+            this.columnsToDisplay.pop();
+            this.columnsToDisplay.push($event.option.value);
+            this.columnsToDisplay.push('actions');
+        } else {
+            items.push($event.option.value);
+            this.localStorage.setItem(this.form.name, items).subscribe();
+            const tableIndex = this.columnsToDisplay.findIndex(w => w === $event.option.value);
+            this.columnsToDisplay.splice(tableIndex, 1);
+        }
     }
 }

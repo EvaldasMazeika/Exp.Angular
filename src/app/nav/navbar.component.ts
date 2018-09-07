@@ -10,6 +10,18 @@ import { TransferDataService } from '../services/trasnferData.service';
     // tslint:disable-next-line:component-selector
     selector: 'nav-bar',
     templateUrl: './navbar.component.html',
+    styles: [`
+    @media (max-width: 768px) {
+        .myClass {
+            height: auto;
+        }
+      }
+    @media (min-width: 769px) {
+        .myClass {
+            height: inherit;
+        }
+    }
+    `]
 })
 
 export class NavbarComponent implements OnInit {

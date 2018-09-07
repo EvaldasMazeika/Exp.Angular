@@ -1,14 +1,15 @@
 <mat-toolbar color="accent">
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-4">
+    <div class="p-grid myClass" style="margin-top: 0px;">
+        <div class="p-col-12 p-md-4" style="align-self: center">
             <span>ExpE</span>
             <button [routerLink]="['dashboard']" mat-button>Dashboard</button>
             <button [routerLink]="['control']" mat-button>Forms control</button>
         </div>
-        <div class="ui-g-12 ui-md-2 ui-md-offset-6" style="align-self: center;padding: 0;">
-            <span *ngIf="router.url === '/dashboard'">
+        <div *ngIf="router.url === '/dashboard'" class="p-col-12 p-md-2 p-md-offset-6" style="align-self: center">
+            <span>
                 <form [formGroup]="form" style="font-size: 15px">
-                    <formly-form (modelChange)="selectChange()" [model]="model" [fields]="fields" [options]="options" [form]="form">
+                    <formly-form (modelChange)="selectChange()" [model]="model" [fields]="fields" [options]="options"
+                        [form]="form">
                     </formly-form>
                 </form>
             </span>

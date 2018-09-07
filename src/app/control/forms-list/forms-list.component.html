@@ -1,7 +1,7 @@
-<div class="ui-g">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-xl-12">
-        <h2 class="mat-display-2" style="color:#3B5998">Forms</h2>
-        <mat-card>
+<div class="container">
+    <div class="p-grid p-nogutter">
+        <div class="p-col-12">
+            <h2 class="mat-display-2" style="color:#3B5998">Forms</h2>
             <button mat-raised-button (click)="openDialog()" style="margin: 5px"> Add Form </button>
             <div class="mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource" style="width: 100%">
@@ -24,6 +24,6 @@
                 </table>
                 <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
-        </mat-card>
+        </div>
     </div>
 </div>

@@ -1,62 +1,91 @@
-<div class="ui-g">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-xl-12">
-        <div *ngIf="form">
-            <h2 class="mat-display-2" style="color:#3B5998">{{form?.name}}</h2>
-            <mat-card>
-                <button *ngIf="form?.items.length !== 0" mat-raised-button (click)="openNewRecordDialog()" style="margin: 5px"> Add
-                    new record </button>
-                <button *ngIf="form?.items.length !== 0 && dataSource.data.length > 0" mat-raised-button (click)="exportToExcel()" style="margin: 5px">Export
-                    to excel</button>
-                <button *ngIf="form?.items.length !== 0 && dataSource.data.length > 0" mat-raised-button (click)="uploader.click()" style="margin: 5px">Export
-                    using template</button>
-                <input hidden type="file" #uploader (change)="useTemplate($event)" />
-                <div class="mat-elevation-z8" [hidden]="!dataSource.data.length > 0">
-                    <table mat-table [dataSource]="dataSource" style="width:100%">
-                        <ng-container matColumnDef="No">
-                            <th mat-header-cell *matHeaderCellDef>No</th>
-                            <td mat-cell *matCellDef="let element">
-                                {{rowsNumbers[element._id]}}
-                            </td>
-                        </ng-container>
-                        <ng-container [matColumnDef]="column" *ngFor="let column of columnsToDisplay | slice:1:-1">
-                            <th mat-header-cell *matHeaderCellDef> {{labelsOfHeaders[column]}} </th>
-                            <div *ngIf="isColumnUrl(column); else isNot">
-                                <td mat-cell *matCellDef="let element">
-                                    <div *ngFor="let item of element[column]">
-                                        <a href="javascript:void(0)" (click)="downloadFile(element._id, column, item)">{{item}}</a>
-                                    </div>
-                                </td>
-                            </div>
-                            <ng-template #isNot>
-                                <div *ngIf="isDateType(column); else notDate">
-                                    <td mat-cell *matCellDef="let element">{{element[column] | date: tempDateFormat[column]}}</td>
-                                </div>
-                                <ng-template #notDate>
-                                    <td mat-cell *matCellDef="let element">{{element[column]}}</td>
-                                </ng-template>
-                            </ng-template>
-                        </ng-container>
-                        <ng-container matColumnDef="actions">
-                            <th mat-header-cell *matHeaderCellDef style="text-align: right;">Actions</th>
-                            <td mat-cell *matCellDef="let element">
-                                <button mat-icon-button matTooltip="Delete record" style="float: right;" (click)="onDelete(element._id)">
-                                    <mat-icon>cancel</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Edit record" style="float: right;" (click)="openEditRecordDialog(element._id)">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                            </td>
-                        </ng-container>
+<div class="container">
+    <div class="p-grid p-nogutter">
+        <div class="p-col-12">
+            <div *ngIf="form">
+                <h2 class="mat-display-2" style="color:#3B5998">{{form?.name}}</h2>
+                <div *ngIf="form?.items.length !== 0">
+                    <div class="p-grid">
+                        <div class="p-col-12 p-sm-10">
+                            <button mat-raised-button (click)="openNewRecordDialog()" style="margin: 5px"> Add new
+                                record
+                            </button>
+                            <button *ngIf="dataSource.data.length > 0" mat-raised-button (click)="exportToExcel()"
+                                style="margin: 5px">Export
+                                to excel</button>
+                            <button *ngIf="dataSource.data.length > 0" mat-raised-button (click)="uploader.click()"
+                                style="margin: 5px">Export
+                                using template</button>
+                        </div>
+                        <div class="p-col-12 p-sm-2">
+                            <button *ngIf="dataSource.data.length > 0" mat-raised-button [matMenuTriggerFor]="menu"
+                                style="float: right;margin: 5px">Columns</button>
+                        </div>
+                    </div>
+                    <input hidden type="file" #uploader (change)="useTemplate($event)" />
 
-                        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-                        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
-                    </table>
-                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    <mat-menu #menu="matMenu">
+                        <mat-selection-list [(ngModel)]="selectedOptions" (selectionChange)="selectList($event)">
+                            <mat-list-option *ngFor="let label of selectListItems | slice:1:-1" [value]="label">
+                                {{labelsOfHeaders[label]}}
+                            </mat-list-option>
+                        </mat-selection-list>
+                    </mat-menu>
+                    <div class="mat-elevation-z8" [hidden]="!dataSource.data.length > 0">
+                        <table mat-table [dataSource]="dataSource" style="width:100%">
+                            <ng-container matColumnDef="No">
+                                <th mat-header-cell *matHeaderCellDef>No</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{rowsNumbers[element._id]}}
+                                </td>
+                            </ng-container>
+                            <ng-container [matColumnDef]="column" *ngFor="let column of columnsToDisplay | slice:1:-1">
+                                <th mat-header-cell *matHeaderCellDef> {{labelsOfHeaders[column]}} </th>
+                                <div *ngIf="isColumnUrl(column); else isNot">
+                                    <td mat-cell *matCellDef="let element">
+                                        <div *ngFor="let item of element[column]">
+                                            <a href="javascript:void(0)" (click)="downloadFile(element._id, column, item)">{{item}}</a>
+                                        </div>
+                                    </td>
+                                </div>
+                                <ng-template #isNot>
+                                    <div *ngIf="isDateType(column); else notDate">
+                                        <td mat-cell *matCellDef="let element">{{element[column] | date:
+                                            tempDateFormat[column]}}</td>
+                                    </div>
+                                    <ng-template #notDate>
+                                        <td mat-cell *matCellDef="let element">{{element[column]}}</td>
+                                    </ng-template>
+                                </ng-template>
+                            </ng-container>
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef style="text-align: right;">Actions</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-icon-button matTooltip="Delete record" style="float: right;" (click)="onDelete(element._id)">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Edit record" style="float: right;" (click)="openEditRecordDialog(element._id)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                    <div [hidden]="dataSource.data.length > 0">
+                        <h1 class="display-2" style="text-align: center">No records found</h1>
+                    </div>
                 </div>
-            </mat-card>
-        </div>
-        <div *ngIf="!form">
-            <h1 class="display-2" style="color: crimson; text-align: center">Choose a form first</h1>
+                <div *ngIf="form?.items.length === 0">
+                    <h1 class="display-2" style="text-align: center">Form has no properties. <a routerLink="/control/form/{{form._id}}">Add
+                            one</a></h1>
+                </div>
+            </div>
+            <div *ngIf="!form">
+                <h1 class="display-2" style="color: crimson; text-align: center">Choose a form first</h1>
+            </div>
         </div>
     </div>
 </div>

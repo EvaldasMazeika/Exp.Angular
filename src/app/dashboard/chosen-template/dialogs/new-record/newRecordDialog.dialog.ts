@@ -38,25 +38,25 @@ export class NewRecordDialog implements OnInit {
         this.service.getLatestRecord(this.data.form._id).subscribe((res) => {
             if (res != null) {
                 const tempModel = {};
-
                 for (const key in res.body) {
                     if (res.body.hasOwnProperty(key)) {
                         const item = this.data.form.items.find(w => w.key === key);
-
-                        if (item.type === 'primeCalendar' && res.body[key] != null) {
-                            if (item.templateOptions.required && item.templateOptions.isPopulated === false) {
-                                tempModel[key] = new Date();
-                            } else if (!item.templateOptions.required && !item.templateOptions.isPopulated) {
-                                tempModel[key] = null;
+                        if (item != null) {
+                            if (item.type === 'primeCalendar' && res.body[key] != null) {
+                                if (item.templateOptions.required && item.templateOptions.isPopulated === false) {
+                                    tempModel[key] = new Date();
+                                } else if (!item.templateOptions.required && !item.templateOptions.isPopulated) {
+                                    tempModel[key] = null;
+                                } else {
+                                    tempModel[key] = new Date(res.body[key]);
+                                }
+                            } else if (item.templateOptions.isPopulated === true && item.type !== 'fileInput') {
+                                tempModel[key] = res.body[key];
+                            } else if (item.type === 'input' && item.defaultValue != null) {
+                                tempModel[key] = item.defaultValue;
                             } else {
-                                tempModel[key] = new Date(res.body[key]);
+                                tempModel[key] = null;
                             }
-                        } else if (item.templateOptions.isPopulated === true && item.type !== 'fileInput') {
-                            tempModel[key] = res.body[key];
-                        } else if (item.type === 'input' && item.defaultValue != null) {
-                            tempModel[key] = item.defaultValue;
-                        } else {
-                            tempModel[key] = null;
                         }
                     }
                 }

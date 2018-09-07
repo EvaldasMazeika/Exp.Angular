@@ -25,3 +25,11 @@ body p-calendar.ng-dirty.ng-invalid > .ui-calendar > .ui-inputtext {
 .mat-toolbar-row, .mat-toolbar-single-row {
     display: table !important;
 }
+
+.mat-card {
+    margin: 5px;
+}
+
+.container {
+    margin: 8px;
+}
