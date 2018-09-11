@@ -53,12 +53,9 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
         this.localStorage.getItem('form').subscribe((res) => {
-            if (res == null) {
-                this.transfer.transferData(null);
-            } else {
+            if (res != null) {
                 this.selectId = res['formId'];
                 this.model = { Select: this.selectId };
-                this.transfer.transferData(this.selectId);
             }
         });
     }

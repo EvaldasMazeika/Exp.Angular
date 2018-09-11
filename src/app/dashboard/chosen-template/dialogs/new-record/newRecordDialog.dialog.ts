@@ -23,6 +23,7 @@ export class NewRecordDialog implements OnInit {
     options: FormlyFormOptions = {};
     fields: FormlyFieldConfig[];
     commonDialog: CommonDialog;
+    isStarted = false;
 
     constructor(
         public dialogRef: MatDialogRef<NewRecordDialog>,
@@ -80,10 +81,11 @@ export class NewRecordDialog implements OnInit {
 
     async submitNewRecord() {
         if (this.form.valid === true && this.CheckForGroups()) {
+            this.isStarted = true;
             const files = this.commonDialog.checkForFileUpload(this.model);
             const record: IRecord = { formId: this.data.form._id, body: this.model };
 
-            const cb = await this.service.InsertRecord(record).toPromise();
+            const cb = await this.service.InsertRecord(this.data.form._id, record).toPromise();
 
             if (Object.keys(files).length > 0) {
                 this.uploadFiles(cb._id, files);
@@ -91,7 +93,7 @@ export class NewRecordDialog implements OnInit {
 
             const words = this.commonDialog.gatherWords(record);
             if (words.words.length > 0) {
-                this.service.AddWordsToAutoDictionaries(words).subscribe();
+                this.service.AddWordsToAutoDictionaries(this.data.form._id, words).subscribe();
             }
             this.dialogRef.close(cb);
             this.iziToast.success({ title: 'Record added successfully' });

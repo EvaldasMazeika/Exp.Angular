@@ -23,6 +23,7 @@ export class EditRecordDialog implements OnInit {
     options: FormlyFormOptions = {};
     fields: FormlyFieldConfig[];
     commonDialog: CommonDialog;
+    isStarted = false;
 
     constructor(
         public dialogRef: MatDialogRef<EditRecordDialog>,
@@ -62,12 +63,13 @@ export class EditRecordDialog implements OnInit {
 
     async updateRecord() {
         if (this.form.valid === true) {
+            this.isStarted = true;
             const files = this.commonDialog.checkForFileUpload(this.model);
             const recordId = this.model._id;
             delete this.model['_id'];
             const record: IRecord = { formId: this.data.form._id, _id: recordId, body: this.model };
 
-            const cb = await this.service.UpdateRecord(record).toPromise();
+            const cb = await this.service.UpdateRecord(this.data.form._id, record).toPromise();
 
             if (Object.keys(files).length > 0) {
                 this.uploadFiles(recordId, files);
@@ -75,7 +77,7 @@ export class EditRecordDialog implements OnInit {
 
             const words = this.commonDialog.gatherWords(record);
             if (words.words.length > 0) {
-                this.service.AddWordsToAutoDictionaries(words).subscribe();
+                this.service.AddWordsToAutoDictionaries(this.data.form._id, words).subscribe();
             }
             this.dialogRef.close(cb);
             this.iziToast.success({ title: 'Record updated successfully' });

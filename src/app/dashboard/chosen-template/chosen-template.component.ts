@@ -23,6 +23,8 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
+    isLoading = true;
+
     form: IMyForm;
     columnsToDisplay: string[];
     dataSource = new MatTableDataSource();
@@ -39,28 +41,43 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
         public dialog: MatDialog,
         protected localStorage: LocalStorage
     ) { }
+
     ngOnInit() {
         this.dataSource.paginator = this.paginator;
-
     }
 
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
-        if (event.keyCode === 45 && !this.isNewRecordFormOpen) {
+        if (event.keyCode === 45 && !this.isNewRecordFormOpen && (this.form != null && this.form.items.length > 0)) {
             this.isNewRecordFormOpen = true;
             this.openNewRecordDialog();
         }
     }
 
     async ngOnChanges(changes: SimpleChanges) {
+        this.isLoading = true;
+
+        this.form = null;
         this.columnsToDisplay = [];
-        const formId: SimpleChange = changes.formId;
-        if (formId.currentValue != null) {
-            this.form = await this.getForm(formId.currentValue);
+        const localForm: SimpleChange = changes.formId;
+
+        if (localForm.isFirstChange) {
+            const result = await this.localStorage.getItem('form').toPromise();
+            if (result != null) {
+                this.form = await this.getForm(result.formId);
+                if (this.form != null) {
+                    await this.AttachRecords(await this.getRecords(result.formId));
+                }
+            }
+
+        } else {
+            this.form = await this.getForm(localForm.currentValue);
             if (this.form != null) {
-                await this.AttachRecords(await this.getRecords(formId.currentValue));
+                await this.AttachRecords(await this.getRecords(localForm.currentValue));
             }
         }
+
+        this.isLoading = false;
     }
 
     async getForm(formId): Promise<IMyForm> {
@@ -210,7 +227,7 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     }
 
     exportToExcel() {
-        this.service.ExportTable(this.formId).subscribe((res) => {
+        this.service.ExportTable(this.form._id).subscribe((res) => {
             importedSaveAs(res, `${this.form.name}.xlsx`);
         });
     }
@@ -219,7 +236,7 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
         if ($event.target.files.length > 0) {
             const formData: FormData = new FormData();
             formData.append($event.target.files[0].name, $event.target.files[0]);
-            this.service.UseTemplate(this.formId, formData).subscribe((res) => {
+            this.service.UseTemplate(this.form._id, formData).subscribe((res) => {
                 importedSaveAs(res, `${this.form.name}.xlsx`);
                 $event.target.value = null;
             });
@@ -237,17 +254,19 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     }
 
     downloadFile(recordId, columnName, itemName) {
-        this.service.DownloadFile(this.formId, recordId, columnName, itemName).subscribe((res) => {
+        this.service.DownloadFile(this.form._id, recordId, columnName, itemName).subscribe((res) => {
             importedSaveAs(res, itemName);
         });
     }
 
     onDelete(id: string) {
-        this.service.DeleteRecord(this.formId, id).subscribe(() => {
+        this.service.DeleteRecord(this.form._id, id).subscribe(() => {
             const index = this.dataSource.data.findIndex(w => w['_id'] === id);
-            this.dataSource.data.splice(index, 1);
-            this.dataSource._updateChangeSubscription();
-            this.iziToast.success({ title: 'Record deleted successfully' });
+            if (index !== -1) {
+                this.dataSource.data.splice(index, 1);
+                this.dataSource._updateChangeSubscription();
+                this.iziToast.success({ title: 'Record deleted successfully' });
+            }
         });
     }
 

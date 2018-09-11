@@ -5,12 +5,12 @@
         <mat-list role="list">
           <form [formGroup]="form" (ngSubmit)="submit()">
             <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form">
-              <button *ngIf="typeOfProperty" type="submit" mat-flat-button color="primary" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)"
+              <button *ngIf="typeOfProperty" type="submit" mat-flat-button color="primary" [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0) || isStarted"
                 class="submit-button">Attach to form</button>
 
               <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="primary" (click)="onPropUpdate()"
-                [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0)" class="submit-button">Update</button>
-              <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="warn" (click)="onPropRemove()">Remove</button>
+                [disabled]="!form.valid || (model.type=='selecListTags' && selectList.length == 0) || isStarted" class="submit-button">Update</button>
+              <button *ngIf="!typeOfProperty" type="button" mat-flat-button color="warn" [disabled]="isStarted" (click)="onPropRemove()">Remove</button>
             </formly-form>
           </form>
         </mat-list>
@@ -27,13 +27,16 @@
           </button>
         </mat-form-field>
         <mat-divider></mat-divider>
-        <mat-nav-list *ngIf="selectList.length > 0" dense>
-          <mat-list-item *ngFor="let item of selectList">
-            <button mat-icon-button matTooltip="Remove option" (click)="removeOption(item.value)">
-              <mat-icon>cancel</mat-icon>
-            </button>{{item.label}}
-          </mat-list-item>
-        </mat-nav-list>
+        <mat-spinner *ngIf="OptionSpinner; else renderOptions" style="margin:0 auto;" mode="indeterminate" diameter="50" color="warn"></mat-spinner>
+        <ng-template #renderOptions>
+            <mat-nav-list *ngIf="selectList.length > 0" dense>
+                <mat-list-item *ngFor="let item of selectList">
+                  <button mat-icon-button matTooltip="Remove option" (click)="removeOption(item.value)">
+                    <mat-icon>cancel</mat-icon>
+                  </button>{{item.label}}
+                </mat-list-item>
+              </mat-nav-list>
+        </ng-template>
       </mat-card>
     </div>
   </div>

@@ -16,6 +16,8 @@ import { ExpensesService } from '../../../services/expenses.service';
 // tslint:disable-next-line:component-class-suffix
 export class NewFormDialog implements OnInit {
 
+    isStarted = false;
+
     form = new FormGroup({});
     model: any = {};
     options: FormlyFormOptions = {};
@@ -31,7 +33,7 @@ export class NewFormDialog implements OnInit {
             },
             validators: {
                 name: {
-                    expression: (c) => !c.value || ( this.data && this.data.forms.find(x => x.name === c.value.trim()) == null),
+                    expression: (c) => !c.value || (this.data && this.data.forms.find(x => x.name === c.value.trim()) == null),
                     message: (error, field: FormlyFieldConfig) => `title already exists`
                 }
             }
@@ -53,6 +55,7 @@ export class NewFormDialog implements OnInit {
 
     async submit() {
         if (this.form.valid === true) {
+            this.isStarted = true;
             this.dialogRef.close(await this.addForm(this.model));
             this.iziToast.success({ title: 'Form added successfully' });
         } else {

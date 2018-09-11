@@ -1,24 +1,27 @@
 <div class="container">
     <div class="p-grid p-nogutter">
-        <div class="p-col-12">
-            <h2 class="mat-display-2" style="color:#3B5998">{{form?.name}}</h2>
-        </div>
-        <div class="p-col-12 p-lg-4">
-            <mat-card>
-                <button type="button" mat-raised-button color="primary" (click)="onPropertySelect(true, undefined)"
-                    style="margin:5px">New
-                    property</button>
-                <mat-divider></mat-divider>
-                <div *ngIf="form">
-                    <mat-nav-list>
-                        <mat-list-item *ngFor="let prop of form.items" (click)="onPropertySelect(false, prop)">{{prop.key}}</mat-list-item>
-                    </mat-nav-list>
-                </div>
-            </mat-card>
-        </div>
-        <div class="p-col-12 p-lg-8">
-            <form-item [property]="selectedProperty" (removeProperty)="onRemoved($event)" (addProperty)="onAdded($event)"
-                (updateProperty)="onUpdated($event)"></form-item>
-        </div>
+            <mat-spinner *ngIf="isLoading;else renderComp" style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+            <ng-template #renderComp>
+                    <div class="p-col-12">
+                            <h2 class="mat-display-2" style="color:#3B5998">{{form?.name}}</h2>
+                        </div>
+                        <div class="p-col-12 p-lg-4">
+                            <mat-card>
+                                <button type="button" mat-raised-button color="primary" (click)="onPropertySelect(true, undefined)"
+                                    style="margin:5px">New
+                                    property</button>
+                                <mat-divider></mat-divider>
+                                <div *ngIf="form">
+                                    <mat-nav-list>
+                                        <mat-list-item *ngFor="let prop of form.items" (click)="onPropertySelect(false, prop)">{{prop.key}}</mat-list-item>
+                                    </mat-nav-list>
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="p-col-12 p-lg-8">
+                            <form-item [property]="selectedProperty" (removeProperty)="onRemoved($event)" (addProperty)="onAdded($event)"
+                                (updateProperty)="onUpdated($event)"></form-item>
+                        </div>
+            </ng-template>
     </div>
 </div>

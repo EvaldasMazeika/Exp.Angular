@@ -13,7 +13,9 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.transfer.currentData.subscribe(data => {
-            this.formId = data;
+            if (data != null) {
+                this.formId = data;
+            }
         });
     }
 }

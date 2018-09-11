@@ -28,6 +28,8 @@ export class FormItemComponent implements OnInit, OnChanges {
   keysOfProperties: any;
   propertyType = '';
   specialKeywords = ['No', 'no', 'Actions', 'actions'];
+  isStarted = false;
+  OptionSpinner = false;
 
   form = new FormGroup({});
   model: IProperty;
@@ -237,6 +239,7 @@ export class FormItemComponent implements OnInit, OnChanges {
     const prop: SimpleChange = changes.property;
     if (!prop.isFirstChange()) {
       if (prop.currentValue != null) {
+        this.selectList = [];
         this.model = prop.currentValue.model;
         this.typeOfProperty = prop.currentValue.isNew;
         this.formId = prop.currentValue.formId;
@@ -260,8 +263,10 @@ export class FormItemComponent implements OnInit, OnChanges {
   }
 
   gatherSelectList() {
+    this.OptionSpinner = true;
     this.service.GetSelectList(this.formId, this.model.key).subscribe((res) => {
       this.selectList = res;
+      this.OptionSpinner = false;
     });
   }
 
@@ -286,6 +291,7 @@ export class FormItemComponent implements OnInit, OnChanges {
   }
 
   submit() {
+    this.isStarted = true;
     switch (this.model.type) {
       case 'autocomplete':
         this.createAutoComplete();
@@ -297,14 +303,18 @@ export class FormItemComponent implements OnInit, OnChanges {
         break;
     }
     this.service.AddProperty(this.formId, this.model).subscribe((result) => {
+      this.isStarted = false;
       this.addProperty.emit(result);
+    }, (error) => {
+      this.iziToast.error({ title: `Error occured` });
+      this.isStarted = false;
     });
   }
 
   createAutoComplete() {
     this.model.templateOptions.formId = this.formId;
     const listOfAutos: IAutoCompleteList = { formId: this.formId, properties: [this.model.key] };
-    this.service.AddAutoCompletes(listOfAutos).subscribe();
+    this.service.AddAutoCompletes(this.formId, listOfAutos).subscribe();
   }
 
   createSelectList() {
@@ -316,6 +326,7 @@ export class FormItemComponent implements OnInit, OnChanges {
   }
 
   onPropUpdate() {
+    this.isStarted = true;
     // todo: if type changes, remove resources form db
     if (this.propertyType !== 'autocomplete' && this.model.type === 'autocomplete') {
       this.createAutoComplete();
@@ -326,12 +337,18 @@ export class FormItemComponent implements OnInit, OnChanges {
     }
 
     this.service.UpdateProperty(this.formId, this.model).subscribe((res) => {
+      this.isStarted = false;
       this.updateProperty.emit(this.model);
+    }, (error) => {
+      this.iziToast.error({ title: `Error occured` });
+      this.isStarted = false;
     });
   }
 
   onPropRemove() {
+    this.isStarted = true;
     this.service.DeleteProperty(this.formId, this.model.key).subscribe(() => {
+      this.isStarted = false;
       this.removeProperty.emit(this.model);
     });
   }

@@ -20,10 +20,11 @@ export class FormsListComponent implements OnInit {
     displayedColumns: string[] = ['name', 'action'];
     dataSource = new MatTableDataSource();
     isFormOpen = false;
+    isLoading = false;
 
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
-        if (event.keyCode === 45 && !this.isFormOpen) {
+        if (event.keyCode === 45 && !this.isFormOpen && this.forms) {
             this.isFormOpen = true;
             this.openDialog();
         }
@@ -41,10 +42,19 @@ export class FormsListComponent implements OnInit {
     }
 
     getForms(): void {
+        this.isLoading = true;
         this.service.getForms().subscribe((forms) => {
             this.forms = forms;
             this.dataSource.data = this.forms;
-        });
+        },
+            (error) => {
+                this.iziToast.error({ title: `Cannot fetch entities` });
+                this.isLoading = false;
+                this.forms = [];
+                this.dataSource.data = [];
+            }, () => {
+                this.isLoading = false;
+            });
     }
 
     openDialog(): void {
@@ -66,17 +76,20 @@ export class FormsListComponent implements OnInit {
     onDelete(ids: string) {
         this.service.DeleteForm(ids).subscribe(() => {
             const index = this.forms.findIndex(d => d._id === ids);
-            this.forms.splice(index, 1);
-            this.dataSource.data = this.forms;
-            this.iziToast.success({ title: 'Form deleted successfully' });
+            if (index !== -1) {
+                this.forms.splice(index, 1);
+                this.dataSource.data = this.forms;
+                this.iziToast.success({ title: 'Form deleted successfully' });
 
-            // check if it exists in localstorage, if then remove
-            this.localStorage.getItem('form').subscribe((form) => {
-                if (form != null && form['formId'] === ids) {
-                    this.localStorage.removeItem('form').subscribe(() => { });
-                }
-            });
-
+                // check if it exists in localstorage, if then remove
+                this.localStorage.getItem('form').subscribe((form) => {
+                    if (form != null && form['formId'] === ids) {
+                        this.localStorage.removeItem('form').subscribe(() => { });
+                    }
+                });
+            }
+        }, (error) => {
+            console.log(error);
         });
     }
 }

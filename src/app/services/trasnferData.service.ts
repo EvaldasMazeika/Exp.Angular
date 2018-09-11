@@ -14,7 +14,9 @@ export class TransferDataService {
     constructor() { }
 
     transferData(data: any) {
-        this.dataSource.next(data);
+        if (data != null) {
+            this.dataSource.next(data);
+        }
     }
 
 }

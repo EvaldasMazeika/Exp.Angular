@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 import { MatInput, MatAutocomplete } from '@angular/material';
 import { Observable } from 'rxjs';
-import { startWith, switchMap, map } from 'rxjs/operators';
 import { ExpensesService } from '../services/expenses.service';
 
 @Component({
@@ -30,7 +29,6 @@ export class AutocompleteTypeComponent extends FieldType implements OnInit {
 
   filter: Observable<any[]>;
   optionss: string[];
-  // filteredOptions: Observable<string[]>;
   filteredOptions: string[];
 
 

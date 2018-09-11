@@ -16,6 +16,7 @@ export class FormsDetailsComponent implements OnInit {
     selectedProperty: ITransferProperty;
     form: IMyForm;
     keysOfProperties: string[];
+    isLoading = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -30,18 +31,22 @@ export class FormsDetailsComponent implements OnInit {
 
     getFormDetails(): void {
         const id = this.route.snapshot.paramMap.get('_id');
+        this.isLoading = true;
         this.service.getForm(id).subscribe((form) => {
-            if (form != null) {
-                this.form = form;
-                this.keysOfProperties = this.form.items.map(x => x.key);
-            } else {
+
+            this.form = form;
+            this.keysOfProperties = this.form.items.map(x => x.key);
+
+            this.isLoading = false;
+        }, (error) => {
+            if (error.status === 404) {
+                this.isLoading = false;
                 this.router.navigate(['/404']);
             }
-
         });
     }
 
-    onPropertySelect(isNew: boolean, prop: IProperty = {templateOptions: {}}) {
+    onPropertySelect(isNew: boolean, prop: IProperty = { templateOptions: {} }) {
         if (isNew) {
             this.selectedProperty = {
                 isNew: isNew,

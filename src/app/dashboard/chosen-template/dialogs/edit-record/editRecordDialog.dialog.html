@@ -4,6 +4,6 @@
     </mat-dialog-content>
     <mat-dialog-actions>
         <button mat-button type="button" (click)="onCancelClick()">Cancel</button>
-        <button mat-raised-button color="primary" type="submit" matTooltip="Update record" [disabled]="!form.valid" style="margin-left:10px">Update</button>
+        <button mat-raised-button color="primary" type="submit" matTooltip="Update record" [disabled]="!form.valid || isStarted" style="margin-left:10px">Update</button>
     </mat-dialog-actions>
 </form>
