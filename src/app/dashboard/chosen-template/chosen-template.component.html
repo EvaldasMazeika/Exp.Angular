@@ -32,7 +32,7 @@
                                 </mat-list-option>
                             </mat-selection-list>
                         </mat-menu>
-                        <div class="mat-elevation-z8" [hidden]="!dataSource.data.length > 0">
+                        <div class="mat-elevation-z8" [hidden]="!(dataSource.data.length > 0)">
                             <table mat-table [dataSource]="dataSource" style="width:100%">
                                 <ng-container matColumnDef="No">
                                     <th mat-header-cell *matHeaderCellDef>No</th>

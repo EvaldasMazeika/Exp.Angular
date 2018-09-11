@@ -7,7 +7,7 @@
             <div [hidden]="isLoading">
                 <h1 *ngIf="dataSource.data.length === 0" class="display-2" style="text-align: center">No
                     forms found</h1>
-                <div class="mat-elevation-z8" [hidden]="!dataSource.data.length > 0">
+                <div class="mat-elevation-z8" [hidden]="!(dataSource.data.length > 0)">
                     <table mat-table [dataSource]="dataSource" style="width: 100%">
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef>Title</th>
