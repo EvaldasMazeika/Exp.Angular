@@ -24,7 +24,7 @@ export class EditRecordDialog implements OnInit {
     fields: FormlyFieldConfig[];
     commonDialog: CommonDialog;
     isStarted = false;
-    isLoaded = false;
+    isLoading = false;
 
     constructor(
         public dialogRef: MatDialogRef<EditRecordDialog>,
@@ -42,12 +42,12 @@ export class EditRecordDialog implements OnInit {
     }
 
     ngOnInit() {
-        this.isLoaded = false;
+        this.isLoading = false;
         this.commonDialog = new CommonDialog(this.data);
         this.fields = this.data.form.items;
         this.options['formId'] = this.data.form._id;
         this.model = this.AdjustModel(this.data.record);
-        this.isLoaded = true;
+        this.isLoading = true;
     }
 
     AdjustModel(record) {
