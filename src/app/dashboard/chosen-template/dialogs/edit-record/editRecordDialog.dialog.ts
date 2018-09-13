@@ -42,12 +42,12 @@ export class EditRecordDialog implements OnInit {
     }
 
     ngOnInit() {
-        this.isLoading = false;
+        this.isLoading = true;
         this.commonDialog = new CommonDialog(this.data);
         this.fields = this.data.form.items;
         this.options['formId'] = this.data.form._id;
         this.model = this.AdjustModel(this.data.record);
-        this.isLoading = true;
+        this.isLoading = false;
     }
 
     AdjustModel(record) {
