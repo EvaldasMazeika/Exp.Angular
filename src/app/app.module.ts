@@ -10,6 +10,7 @@ import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CalendarModule } from 'primeng/calendar';
+import { MatProgressButtons } from 'mat-progress-buttons';
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
@@ -70,6 +71,7 @@ import { PrimeCalendar } from './types/primeCalendar-type.component';
     MaterialFileInputModule,
     NgSelectModule,
     CalendarModule,
+    MatProgressButtons,
     FormlyModule.forRoot({
       types: [
         {

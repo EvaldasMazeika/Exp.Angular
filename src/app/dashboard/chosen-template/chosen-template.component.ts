@@ -9,6 +9,7 @@ import { NewRecordDialog } from './dialogs/new-record/newRecordDialog.dialog';
 import * as _ from 'lodash';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { LocalStorage } from '@ngx-pwa/local-storage';
+import { ButtonOpts } from 'mat-progress-buttons';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -34,6 +35,28 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     rowsNumbers: any = {};
     selectListItems: string[];
     selectedOptions: string[];
+
+    simpleExportButtonOptions: ButtonOpts = {
+        active: false,
+        text: 'Export to excel',
+        spinnerSize: 18,
+        raised: true,
+        spinnerColor: 'accent',
+        fullWidth: false,
+        disabled: false,
+        mode: 'indeterminate',
+      };
+
+      templateExportButtonOptions: ButtonOpts = {
+        active: false,
+        text: 'Export using template',
+        spinnerSize: 18,
+        raised: true,
+        spinnerColor: 'accent',
+        fullWidth: false,
+        disabled: false,
+        mode: 'indeterminate',
+      };
 
     constructor(
         private service: ExpensesService,
@@ -227,18 +250,26 @@ export class ChosenTemplateComponent implements OnChanges, OnInit {
     }
 
     exportToExcel() {
+        this.simpleExportButtonOptions.active = true;
+        this.simpleExportButtonOptions.text = 'Preparing...';
         this.service.ExportTable(this.form._id).subscribe((res) => {
             importedSaveAs(res, `${this.form.name}.xlsx`);
+            this.simpleExportButtonOptions.active = false;
+            this.simpleExportButtonOptions.text = 'Export to excel';
         });
     }
 
     useTemplate($event) {
         if ($event.target.files.length > 0) {
+            this.templateExportButtonOptions.active = true;
+            this.templateExportButtonOptions.text = 'Preparing...';
             const formData: FormData = new FormData();
             formData.append($event.target.files[0].name, $event.target.files[0]);
             this.service.UseTemplate(this.form._id, formData).subscribe((res) => {
                 importedSaveAs(res, `${this.form.name}.xlsx`);
                 $event.target.value = null;
+                this.templateExportButtonOptions.active = false;
+                this.templateExportButtonOptions.text = 'Export to excel';
             });
         }
     }

@@ -24,20 +24,30 @@ export class EditRecordDialog implements OnInit {
     fields: FormlyFieldConfig[];
     commonDialog: CommonDialog;
     isStarted = false;
+    isLoaded = false;
 
     constructor(
         public dialogRef: MatDialogRef<EditRecordDialog>,
         private service: ExpensesService,
         public iziToast: Ng2IzitoastService,
         @Inject(MAT_DIALOG_DATA) public data: any
-    ) { }
+    ) {
+        dialogRef.beforeClose().subscribe(() => this.clear());
+    }
 
+    clear() {
+        this.form = new FormGroup({});
+        this.model = {};
+        this.fields = [];
+    }
 
     ngOnInit() {
+        this.isLoaded = false;
         this.commonDialog = new CommonDialog(this.data);
         this.fields = this.data.form.items;
         this.options['formId'] = this.data.form._id;
         this.model = this.AdjustModel(this.data.record);
+        this.isLoaded = true;
     }
 
     AdjustModel(record) {

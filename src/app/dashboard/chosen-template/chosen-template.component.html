@@ -8,19 +8,18 @@
                     <div *ngIf="form.items.length !== 0">
                         <div class="p-grid">
                             <div class="p-col-12 p-sm-10">
-                                <button mat-raised-button (click)="openNewRecordDialog()" style="margin: 5px"> Add new
+                                <button mat-button mat-raised-button (click)="openNewRecordDialog()" style="margin: 5px">
+                                    Add new
                                     record
                                 </button>
-                                <button *ngIf="dataSource.data.length > 0" mat-raised-button (click)="exportToExcel()"
-                                    style="margin: 5px">Export
-                                    to excel</button>
-                                <button *ngIf="dataSource.data.length > 0" mat-raised-button (click)="uploader.click()"
-                                    style="margin: 5px">Export
-                                    using template</button>
+                                <spinner-button style="margin: 5px" *ngIf="dataSource.data.length > 0" [options]="simpleExportButtonOptions"
+                                    (click)="exportToExcel()"></spinner-button>
+                                <spinner-button style="margin: 5px" *ngIf="dataSource.data.length > 0" [options]="templateExportButtonOptions"
+                                    (click)="uploader.click()"></spinner-button>
                             </div>
                             <div class="p-col-12 p-sm-2">
-                                <button *ngIf="dataSource.data.length > 0" mat-raised-button [matMenuTriggerFor]="menu"
-                                    style="float: right;margin: 5px">Columns</button>
+                                <button *ngIf="dataSource.data.length > 0" mat-button mat-raised-button
+                                    [matMenuTriggerFor]="menu" style="float: right;margin: 5px">Columns</button>
                             </div>
                         </div>
                         <input hidden type="file" #uploader (change)="useTemplate($event)" />

@@ -2,7 +2,7 @@
     <div class="p-grid p-nogutter">
         <div class="p-col-12">
             <h2 class="mat-display-2" style="color:#3B5998">Forms</h2>
-            <button mat-raised-button (click)="openDialog()" [disabled]="!forms" style="margin: 5px"> Add Form </button>
+            <button mat-button mat-raised-button (click)="openDialog()" [disabled]="!forms" style="margin: 5px"> Add Form </button>
             <mat-spinner *ngIf="isLoading" style="margin:0 auto;" mode="indeterminate"></mat-spinner>
             <div [hidden]="isLoading">
                 <h1 *ngIf="dataSource.data.length === 0" class="display-2" style="text-align: center">No

@@ -24,15 +24,25 @@ export class NewRecordDialog implements OnInit {
     fields: FormlyFieldConfig[];
     commonDialog: CommonDialog;
     isStarted = false;
+    isLoading = false;
 
     constructor(
         public dialogRef: MatDialogRef<NewRecordDialog>,
         private service: ExpensesService,
         public iziToast: Ng2IzitoastService,
         @Inject(MAT_DIALOG_DATA) public data: any,
-    ) { }
+    ) {
+        dialogRef.beforeClose().subscribe(() => this.clear());
+    }
+
+    clear() {
+        this.form = new FormGroup({});
+        this.model = {};
+        this.fields = [];
+    }
 
     ngOnInit() {
+        this.isLoading = true;
         this.commonDialog = new CommonDialog(this.data);
         this.fields = this.data.form.items;
         this.options['formId'] = this.data.form._id;
@@ -72,6 +82,8 @@ export class NewRecordDialog implements OnInit {
                 });
                 this.model = tempModel;
             }
+
+            this.isLoading = false;
         });
     }
 
@@ -81,6 +93,7 @@ export class NewRecordDialog implements OnInit {
 
     async submitNewRecord() {
         if (this.form.valid === true && this.CheckForGroups()) {
+
             this.isStarted = true;
             const files = this.commonDialog.checkForFileUpload(this.model);
             const record: IRecord = { formId: this.data.form._id, body: this.model };
